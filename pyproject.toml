@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "code2schema"
+version = "0.1.1"
+description = "Semantic compiler: Code → AST → CQRS Model → Workflow DAG → Proto/Schema"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["ast", "cqrs", "static-analysis", "code-quality", "schema"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Code Generators",
+]
+dependencies = [
+    "libcst>=1.1.0",
+    "networkx>=3.2",
+    "pydantic>=2.5",
+]
+
+[project.license]
+text = "Apache-2.0"
+
+[project.optional-dependencies]
+proto = ["grpcio-tools>=1.60"]
+neo4j = ["neo4j>=5.15"]
+viz = ["pyvis>=0.3"]
+dev = ["pytest>=8", "pytest-cov", "black", "ruff",
+    "goal>=2.1.0",
+    "costs>=0.1.20",
+    "pfix>=0.1.60",
+]
+
+[project.scripts]
+code2schema = "code2schema.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["code2schema*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short -q"
+
+[tool.ruff]
+line-length = 100
+
+[tool.pfix]
+# Self-healing Python configuration
+model = "openrouter/qwen/qwen3-coder-next"
+auto_apply = true
+auto_install_deps = true
+auto_restart = false
+max_retries = 3
+create_backups = false
+git_auto_commit = false
+
+[tool.pfix.runtime_todo]
+enabled = true
+todo_file = "TODO.md"
+min_severity = "low"
+deduplicate = true
+
+[tool.costs]
+# AI Cost tracking configuration
+badge = true
+update_readme = true
+readme_path = "README.md"
+default_model = "openrouter/qwen/qwen3-coder-next"
+analysis_mode = "byok"
+full_history = true
+max_commits = 500
+
+# Cost thresholds for badge colors (USD)
+badge_color_thresholds = { low = 1.0, medium = 5.0, high = 10.0, critical = 50.0 }
