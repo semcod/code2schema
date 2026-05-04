@@ -3,17 +3,15 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.1-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.15-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-1.0h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-0.1.2-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$0.15-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-2.0h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fqwen%2Fqwen3--coder--next-lightgrey)
 
 - 🤖 **LLM usage:** $0.1500 (1 commits)
-- 👤 **Human dev:** ~$100 (1.0h @ $100/h, 30min dedup)
+- 👤 **Human dev:** ~$200 (2.0h @ $100/h, 30min dedup)
 
 Generated on 2026-05-04 using [openrouter/qwen/qwen3-coder-next](https://openrouter.ai/qwen/qwen3-coder-next)
 
 ---
-
-
 
 **Semantic Compiler for Software Systems**
 
@@ -49,32 +47,80 @@ pip install "code2schema[dev]"     # pytest + ruff + black
 ## Szybki start
 
 ```bash
-# Pełna analiza projektu
-code2schema ./moj_projekt \
-  --out schema.json \
-  --proto api.proto \
-  --md report.md \
-  --graphml graph.graphml \
-  --dot graph.dot \
-  --graph-summary \
-  --events \
-  --cycles
+# Analiza z auto-generowanymi nazwami plików (w katalogu bieżącym)
+code2schema /home/tom/github/maskservice/c2004/backend
+# → c2004_schema.json
+
+# Pełna analiza ze wszystkimi formatami wyjściowymi
+code2schema ./backend --proto --md --html
+# → backend_schema.json
+# → backend_api.proto
+# → backend_report.md
+# → backend_viz.html
+
+# Pełna analiza ze szczegółami
+code2schema ./backend --proto --md --html --graph-summary --events --cycles
 ```
 
 Przykładowy output:
 
 ```
-✅ Gotowe (1.2s)
-   Modules  : 87
-   Functions: 883
-   Queries  : 612
-   Commands : 184
-   Orchest. : 87
-   Workflows: 87
-   Rules    : 43
-   Graph    : 883N / 1204E
-   → schema.json
+✅ Gotowe (1.8s)
+   Modules  : 607
+   Functions: 3142
+   Queries  : 1518
+   Commands : 505
+   Orchest. : 1119
+   Workflows: 1118
+   Rules    : 320
+   Graph    : 2922N / 5612E
+   → c2004_schema.json
+   → c2004_api.proto
+   → c2004_report.md
 ```
+
+## Test na dużym projekcie (c2004 backend)
+
+Analiza produkcyjnego projektu IoT (607 modułów, 3142 funkcje):
+
+```bash
+code2schema /home/tom/github/maskservice/c2004/backend --proto --md --html
+# Pliki generowane w /home/tom/github/maskservice/c2004/ (katalog projektu)
+```
+
+**Wyniki:**
+```
+✅ Gotowe (1.8s)
+   Modules  : 607
+   Functions: 3142
+   Queries  : 1518
+   Commands : 505
+   Orchest. : 1119
+   Workflows: 1118
+   Rules    : 320
+   Graph    : 2922N / 5612E
+   → c2004_schema.json
+   → c2004_api.proto
+   → c2004_report.md
+   → c2004_viz.html
+```
+
+## Dokumentacja i przykłady
+
+- **[Dokumentacja](docs/)** — przykłady użycia CLI i Python API
+  - [CLI examples](docs/examples/cli/basic.sh)
+  - [Python API — basic](docs/examples/api/basic.py)
+  - [Python API — advanced](docs/examples/api/advanced.py)
+  - [Sample outputs](docs/examples/outputs/)
+
+Wykryte cykle w architekturze CQRS (do refaktoryzacji):
+- `handle → publish → _execute → publish → handle`
+
+**Wygenerowane artefakty:**
+- `c2004_schema.json` (2.9MB) — pełny model
+- `c2004_api.proto` (188KB) — gRPC contracts
+- `c2004_report.md` (49KB) — podsumowanie jakości
+- `c2004_viz.html` (1.1MB) — **interaktywny graf D3.js** z wyszukiwaniem i filtrowaniem
 
 ## Użycie w kodzie
 
@@ -105,6 +151,21 @@ print(em.summary())
 # Eksport
 print(to_proto(schema))
 print(to_markdown(schema))
+```
+
+## Wizualizacja HTML (`--html`)
+
+Interaktywny graf D3.js z funkcjami:
+- **Kolory ról**: 🟢 Query, 🟠 Command, 🟣 Orchestrator
+- **Wyszukiwanie** — filtruje węzły w czasie rzeczywistym
+- **Hover** — podświetla połączenia (call graph)
+- **Klik** — szczegóły funkcji (fan-out, side effects, reguły jakości)
+- **Filtry** — pokazuj/ukrywaj kategorie ról
+- **Force layout** — przeciąganie węzłów
+
+```bash
+code2schema ./backend --html viz.html
+# Otwórz w przeglądarce: open viz.html
 ```
 
 ## Architektura paczki

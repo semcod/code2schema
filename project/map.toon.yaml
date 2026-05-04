@@ -1,0 +1,175 @@
+# code2schema | 28f 114242L | yaml:9,json:2,toml:1,shell:2,python:13,txt:1 | 2026-05-04
+# stats: 103 func | 0 cls | 28 mod | CC̄=2.1 | critical:2 | cycles:0
+# alerts[5]: fan-out main=32; CC main=30; CC infer_event_model=26; fan-out infer_event_model=17; fan-out _build_graph_data=13
+# hotspots[5]: main fan=32; infer_event_model fan=17; extract_module fan=13; _build_graph_data fan=13; graph_summary fan=11
+# evolution: CC̄ 2.1→2.1 (flat 0.0)
+# Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
+M[28]:
+  code2schema/__init__.py,10
+  code2schema/analyzer/__init__.py,1
+  code2schema/analyzer/cqrs.py,166
+  code2schema/analyzer/events.py,162
+  code2schema/analyzer/graph.py,146
+  code2schema/cli.py,147
+  code2schema/codegen/__init__.py,117
+  code2schema/codegen/visualizer.py,317
+  code2schema/core/__init__.py,1
+  code2schema/core/extractor.py,160
+  code2schema/core/models.py,95
+  docs/examples/api/advanced.py,67
+  docs/examples/api/basic.py,52
+  docs/examples/cli/basic.sh,45
+  docs/examples/outputs/schema-sample.json,56
+  goal.yaml,510
+  project.sh,48
+  project/analysis.toon.yaml,75
+  project/calls.yaml,349
+  project/calls.toon.yaml,99
+  project/duplication.toon.yaml,9
+  project/evolution.toon.yaml,47
+  project/map.toon.yaml,114
+  project/project.toon.yaml,49
+  project/prompt.txt,47
+  pyproject.toml,77
+  schema.json,111256
+  testql-scenarios/generated-cli-tests.testql.toon.yaml,20
+D:
+  code2schema/cli.py:
+    e: _project_name_from_path,main
+    _project_name_from_path(path)
+    main(argv)
+  code2schema/analyzer/events.py:
+    e: DomainEvent,CommandHandler,EventModel,infer_event_model,_derive_event_name,_past_tense
+    DomainEvent:
+    CommandHandler:
+    EventModel: summary(0)
+    infer_event_model(modules)
+    _derive_event_name(func_name)
+    _past_tense(verb)
+  code2schema/codegen/visualizer.py:
+    e: _build_graph_data,to_html,write_html
+    _build_graph_data(schema)
+    to_html(schema)
+    write_html(schema;path)
+  code2schema/analyzer/graph.py:
+    e: build_rich_graph,centrality_report,hub_nodes,detect_cycles,layer_violations,write_graphml,write_dot,graph_summary
+    build_rich_graph(schema)
+    centrality_report(G;top_n)
+    hub_nodes(G;threshold)
+    detect_cycles(G)
+    layer_violations(schema)
+    write_graphml(G;path)
+    write_dot(G;path)
+    graph_summary(G;schema)
+  code2schema/analyzer/cqrs.py:
+    e: _infer_role,build_call_graph,detect_cycles,centrality,build_workflows,generate_rules,analyze
+    _infer_role(func)
+    build_call_graph(modules)
+    detect_cycles(G)
+    centrality(G)
+    build_workflows(modules)
+    generate_rules(modules)
+    analyze(modules)
+  code2schema/codegen/__init__.py:
+    e: to_json,write_json,to_proto,write_proto,to_markdown,write_markdown,_safe_proto_name
+    to_json(schema;indent)
+    write_json(schema;path)
+    to_proto(schema)
+    write_proto(schema;path)
+    to_markdown(schema)
+    write_markdown(schema;path)
+    _safe_proto_name(name)
+  code2schema/core/extractor.py:
+    e: _FunctionVisitor,extract_module,extract_project,_path_to_module
+    _FunctionVisitor(ast.NodeVisitor): __init__(1),visit_Import(1),visit_ImportFrom(1),visit_FunctionDef(1),visit_AsyncFunctionDef(1),_process_func(2),_collect_calls(1),_resolve_call_name(0),_detect_side_effects(2)  # Odwiedza węzły AST i buduje FunctionIR...
+    extract_module(path)
+    extract_project(root;exclude)
+    _path_to_module(path)
+  code2schema/core/models.py:
+    e: CQRSRole,SideEffect,FunctionIR,ModuleIR,WorkflowStep,WorkflowIR,RuleIR,SchemaIR
+    CQRSRole(str,Enum):
+    SideEffect(str,Enum):
+    FunctionIR(BaseModel):  # Pojedyncza funkcja w modelu semantycznym...
+    ModuleIR(BaseModel):  # Moduł (plik .py) z wyekstrahowanymi funkcjami...
+    WorkflowStep(BaseModel):
+    WorkflowIR(BaseModel):  # Graf wykonania (DAG) dla jednej funkcji-orkiestratora...
+    RuleIR(BaseModel):  # Heurystyczna reguła jakości wygenerowana z analizy...
+    SchemaIR(BaseModel): all_functions(0),orchestrators(0),commands(0),queries(0)  # Korzeń modelu semantycznego całego projektu...
+  goal.yaml:
+  schema.json:
+  pyproject.toml:
+  project.sh:
+  code2schema/__init__.py:
+  code2schema/analyzer/__init__.py:
+  code2schema/core/__init__.py:
+  testql-scenarios/generated-cli-tests.testql.toon.yaml:
+  docs/examples/outputs/schema-sample.json:
+  docs/examples/cli/basic.sh:
+  project/prompt.txt:
+  project/calls.toon.yaml:
+  project/evolution.toon.yaml:
+  project/calls.yaml:
+  project/duplication.toon.yaml:
+  project/project.toon.yaml:
+  project/analysis.toon.yaml:
+  project/map.toon.yaml:
+    e: _infer_role,build_call_graph,detect_cycles,centrality,build_workflows,generate_rules,analyze,infer_event_model,_derive_event_name,_past_tense,build_rich_graph,centrality_report,hub_nodes,detect_cycles,layer_violations,write_graphml,write_dot,graph_summary,_project_name_from_path,main,to_json,write_json,to_proto,write_proto,to_markdown,write_markdown,_safe_proto_name,_build_graph_data,to_html,write_html,extract_module,extract_project,_path_to_module,sample_file,sample_module,test_extract_module_returns_module,test_function_names,test_side_effects_detected,test_query_no_side_effects,test_role_query,test_role_command,test_role_orchestrator,test_analyze_schema,test_analyze_generates_rules,test_call_graph_has_edges,test_to_json,test_to_proto,test_to_markdown,test_empty_project,test_invalid_syntax_file,test_build_rich_graph,test_no_cycles_in_sample,test_graphml_export,test_dot_export,test_layer_violations,test_event_model_runs,test_event_model_summary
+    _infer_role()
+    build_call_graph()
+    detect_cycles()
+    centrality()
+    build_workflows()
+    generate_rules()
+    analyze()
+    infer_event_model()
+    _derive_event_name()
+    _past_tense()
+    build_rich_graph()
+    centrality_report()
+    hub_nodes()
+    detect_cycles()
+    layer_violations()
+    write_graphml()
+    write_dot()
+    graph_summary()
+    _project_name_from_path()
+    main()
+    to_json()
+    write_json()
+    to_proto()
+    write_proto()
+    to_markdown()
+    write_markdown()
+    _safe_proto_name()
+    _build_graph_data()
+    to_html()
+    write_html()
+    extract_module()
+    extract_project()
+    _path_to_module()
+    sample_file()
+    sample_module()
+    test_extract_module_returns_module()
+    test_function_names()
+    test_side_effects_detected()
+    test_query_no_side_effects()
+    test_role_query()
+    test_role_command()
+    test_role_orchestrator()
+    test_analyze_schema()
+    test_analyze_generates_rules()
+    test_call_graph_has_edges()
+    test_to_json()
+    test_to_proto()
+    test_to_markdown()
+    test_empty_project()
+    test_invalid_syntax_file()
+    test_build_rich_graph()
+    test_no_cycles_in_sample()
+    test_graphml_export()
+    test_dot_export()
+    test_layer_violations()
+    test_event_model_runs()
+    test_event_model_summary()
+  docs/examples/api/advanced.py:
+  docs/examples/api/basic.py:

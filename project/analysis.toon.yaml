@@ -1,0 +1,75 @@
+# code2llm | 28f 114236L | python:13,yaml:9,json:2,shell:2,toml:1,txt:1 | 2026-05-04
+# CC̄=2.1 | critical:2/103 | dups:0 | cycles:0
+
+HEALTH[2]:
+  🟡 CC    main CC=30 (limit:15)
+  🟡 CC    infer_event_model CC=26 (limit:15)
+
+REFACTOR[1]:
+  1. split 2 high-CC methods  (CC>15)
+
+PIPELINES[15]:
+  [1] Src [main]: main → _project_name_from_path
+      PURITY: 100% pure
+  [2] Src [summary]: summary
+      PURITY: 100% pure
+  [3] Src [centrality]: centrality
+      PURITY: 100% pure
+  [4] Src [__init__]: __init__
+      PURITY: 100% pure
+  [5] Src [visit_Import]: visit_Import
+      PURITY: 100% pure
+
+LAYERS:
+  code2schema/                    CC̄=4.6    ←in:0  →out:9  !! split
+  │ visualizer                 317L  0C    3m  CC=9      ←1
+  │ cqrs                       166L  0C    7m  CC=7      ←1
+  │ !! events                     162L  3C    4m  CC=26     ←1
+  │ extractor                  160L  1C   12m  CC=6      ←1
+  │ !! cli                        147L  0C    2m  CC=30     ←0
+  │ graph                      146L  0C    8m  CC=8      ←1
+  │ __init__                   117L  0C    7m  CC=7      ←1
+  │ models                      95L  8C    4m  CC=3      ←0
+  │ __init__                    10L  0C    0m  CC=0.0    ←0
+  │ __init__                     1L  0C    0m  CC=0.0    ←0
+  │ __init__                     1L  0C    0m  CC=0.0    ←0
+  │
+  project/                        CC̄=0.0    ←in:0  →out:0
+  │ calls.yaml                 349L  0C    0m  CC=0.0    ←0
+  │ map.toon.yaml              114L  0C   56m  CC=0.0    ←0
+  │ calls.toon.yaml             99L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml          69L  0C    0m  CC=0.0    ←0
+  │ project.toon.yaml           49L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
+  │ evolution.toon.yaml         47L  0C    0m  CC=0.0    ←0
+  │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
+  │
+  ./                              CC̄=0.0    ←in:0  →out:0
+  │ !! schema.json              111256L  0C    0m  CC=0.0    ←0
+  │ !! goal.yaml                  510L  0C    0m  CC=0.0    ←0
+  │ pyproject.toml              77L  0C    0m  CC=0.0    ←0
+  │ project.sh                  48L  0C    0m  CC=0.0    ←0
+  │
+  testql-scenarios/               CC̄=0.0    ←in:0  →out:0
+  │ generated-cli-tests.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │
+  docs/                           CC̄=0.0    ←in:0  →out:0
+  │ advanced                    67L  0C    0m  CC=0.0    ←0
+  │ schema-sample.json          56L  0C    0m  CC=0.0    ←0
+  │ basic                       52L  0C    0m  CC=0.0    ←0
+  │ basic.sh                    45L  0C    0m  CC=0.0    ←0
+  │
+
+COUPLING:
+                                 code2schema  code2schema.analyzer   code2schema.codegen      code2schema.core
+           code2schema                    ──                     7                     1                     1  !! fan-out
+  code2schema.analyzer                    ←7                    ──                                              hub
+   code2schema.codegen                    ←1                                          ──                      
+      code2schema.core                    ←1                                                                ──
+  CYCLES: none
+  HUB: code2schema.analyzer/ (fan-in=7)
+  SMELL: code2schema/ fan-out=9 → split needed
+
+EXTERNAL:
+  validation: run `vallm batch .` → validation.toon
+  duplication: run `redup scan .` → duplication.toon

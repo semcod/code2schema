@@ -1,0 +1,56 @@
+{
+  "modules": [
+    {
+      "name": "app.main",
+      "path": "app/main.py",
+      "functions": [
+        {
+          "name": "lifespan",
+          "module": "app.main",
+          "role": "orchestrator",
+          "is_async": true,
+          "lines": 113,
+          "fan_out": 18,
+          "calls": [
+            "init_db",
+            "get_logger",
+            "setup_cqrs",
+            "init_config"
+          ],
+          "side_effects": ["io", "network"]
+        },
+        {
+          "name": "health_check",
+          "module": "app.main",
+          "role": "query",
+          "is_async": true,
+          "lines": 5,
+          "fan_out": 0,
+          "calls": [],
+          "side_effects": ["none"]
+        }
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "name": "workflow_lifespan",
+      "entry": "app.main.lifespan",
+      "steps": [
+        {"callee": "init_db"},
+        {"callee": "get_logger"},
+        {"callee": "setup_cqrs"},
+        {"callee": "init_config"}
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "HIGH_FAN_OUT",
+      "severity": "error",
+      "target": "app.main.lifespan",
+      "condition": "fan_out=18 >= 10",
+      "suggestion": "refactor_to_service"
+    }
+  ]
+}

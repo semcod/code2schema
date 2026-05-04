@@ -1,0 +1,99 @@
+# code2llm call graph | /home/tom/github/semcod/code2schema
+# nodes: 26 | edges: 18 | modules: 6
+# CC̄=2.1
+
+HUBS[20]:
+  code2schema.codegen.visualizer._build_graph_data
+    CC=9  in:1  out:22  total:23
+  code2schema.analyzer.events.infer_event_model
+    CC=26  in:1  out:21  total:22
+  code2schema.analyzer.graph.graph_summary
+    CC=8  in:1  out:21  total:22
+  code2schema.codegen.to_markdown
+    CC=7  in:1  out:16  total:17
+  code2schema.core.extractor.extract_module
+    CC=5  in:1  out:14  total:15
+  code2schema.codegen.to_proto
+    CC=3  in:1  out:10  total:11
+  code2schema.analyzer.events._derive_event_name
+    CC=5  in:2  out:8  total:10
+  code2schema.analyzer.cqrs.analyze
+    CC=6  in:1  out:9  total:10
+  code2schema.analyzer.cqrs.generate_rules
+    CC=7  in:1  out:6  total:7
+  code2schema.core.extractor.extract_project
+    CC=6  in:1  out:5  total:6
+  code2schema.analyzer.cqrs.build_call_graph
+    CC=7  in:1  out:5  total:6
+  code2schema.analyzer.graph.centrality_report
+    CC=2  in:1  out:4  total:5
+  code2schema.analyzer.cqrs.build_workflows
+    CC=6  in:1  out:3  total:4
+  code2schema.codegen._safe_proto_name
+    CC=2  in:1  out:3  total:4
+  code2schema.core.extractor._path_to_module
+    CC=1  in:1  out:3  total:4
+  code2schema.codegen.visualizer.to_html
+    CC=1  in:1  out:3  total:4
+  code2schema.analyzer.events._past_tense
+    CC=1  in:1  out:3  total:4
+  code2schema.codegen.write_json
+    CC=1  in:1  out:2  total:3
+  code2schema.codegen.write_markdown
+    CC=1  in:1  out:2  total:3
+  code2schema.analyzer.graph.layer_violations
+    CC=8  in:1  out:2  total:3
+
+MODULES:
+  code2schema.analyzer.cqrs  [5 funcs]
+    _infer_role  CC=4  out:0
+    analyze  CC=6  out:9
+    build_call_graph  CC=7  out:5
+    build_workflows  CC=6  out:3
+    generate_rules  CC=7  out:6
+  code2schema.analyzer.events  [3 funcs]
+    _derive_event_name  CC=5  out:8
+    _past_tense  CC=1  out:3
+    infer_event_model  CC=26  out:21
+  code2schema.analyzer.graph  [5 funcs]
+    centrality_report  CC=2  out:4
+    detect_cycles  CC=1  out:2
+    graph_summary  CC=8  out:21
+    hub_nodes  CC=3  out:1
+    layer_violations  CC=8  out:2
+  code2schema.codegen  [7 funcs]
+    _safe_proto_name  CC=2  out:3
+    to_json  CC=1  out:2
+    to_markdown  CC=7  out:16
+    to_proto  CC=3  out:10
+    write_json  CC=1  out:2
+    write_markdown  CC=1  out:2
+    write_proto  CC=1  out:2
+  code2schema.codegen.visualizer  [3 funcs]
+    _build_graph_data  CC=9  out:22
+    to_html  CC=1  out:3
+    write_html  CC=1  out:2
+  code2schema.core.extractor  [3 funcs]
+    _path_to_module  CC=1  out:3
+    extract_module  CC=5  out:14
+    extract_project  CC=6  out:5
+
+EDGES:
+  code2schema.analyzer.events.infer_event_model → code2schema.analyzer.events._derive_event_name
+  code2schema.analyzer.events._derive_event_name → code2schema.analyzer.events._past_tense
+  code2schema.analyzer.cqrs.analyze → code2schema.analyzer.cqrs.build_call_graph
+  code2schema.analyzer.cqrs.analyze → code2schema.analyzer.cqrs.build_workflows
+  code2schema.analyzer.cqrs.analyze → code2schema.analyzer.cqrs.generate_rules
+  code2schema.analyzer.cqrs.analyze → code2schema.analyzer.cqrs._infer_role
+  code2schema.analyzer.graph.graph_summary → code2schema.analyzer.graph.detect_cycles
+  code2schema.analyzer.graph.graph_summary → code2schema.analyzer.graph.hub_nodes
+  code2schema.analyzer.graph.graph_summary → code2schema.analyzer.graph.centrality_report
+  code2schema.analyzer.graph.graph_summary → code2schema.analyzer.graph.layer_violations
+  code2schema.core.extractor.extract_module → code2schema.core.extractor._path_to_module
+  code2schema.core.extractor.extract_project → code2schema.core.extractor.extract_module
+  code2schema.codegen.write_json → code2schema.codegen.to_json
+  code2schema.codegen.to_proto → code2schema.codegen._safe_proto_name
+  code2schema.codegen.write_proto → code2schema.codegen.to_proto
+  code2schema.codegen.write_markdown → code2schema.codegen.to_markdown
+  code2schema.codegen.visualizer.to_html → code2schema.codegen.visualizer._build_graph_data
+  code2schema.codegen.visualizer.write_html → code2schema.codegen.visualizer.to_html

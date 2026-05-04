@@ -16,18 +16,38 @@ from code2schema.analyzer.graph import (
     build_rich_graph, detect_cycles, graph_summary, write_dot, write_graphml,
 )
 from code2schema.codegen import write_json, write_markdown, write_proto
+from code2schema.codegen.visualizer import write_html
 from code2schema.core.extractor import extract_project
+
+
+def _project_name_from_path(path: Path) -> str:
+    """Extract project name from path (e.g., /path/to/c2004/backend -> c2004)."""
+    # Try to find a meaningful name from the path
+    parts = path.parts
+    for i, part in enumerate(reversed(parts)):
+        if part in ("backend", "frontend", "src", "app", "api"):
+            # Use parent directory name
+            if i < len(parts) - 1:
+                return parts[-(i + 2)]
+        # Skip common generic names
+        if part not in ("home", "github", "workspace", "projects", "src"):
+            return part
+    return path.name or "project"
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="code2schema",
         description="Semantic Compiler: Code → CQRS → Schema / Proto / Graph")
     parser.add_argument("path")
-    parser.add_argument("-o", "--out", default="schema.json")
-    parser.add_argument("--proto", metavar="FILE")
-    parser.add_argument("--md", metavar="FILE")
+    parser.add_argument("-o", "--out", metavar="FILE", help="Output JSON schema (default: <project>_schema.json)")
+    parser.add_argument("--proto", metavar="FILE", nargs="?", const=True, default=None,
+                        help="Output .proto file (default: <project>_api.proto if flag present)")
+    parser.add_argument("--md", metavar="FILE", nargs="?", const=True, default=None,
+                        help="Output Markdown report (default: <project>_report.md if flag present)")
     parser.add_argument("--graphml", metavar="FILE")
     parser.add_argument("--dot", metavar="FILE")
+    parser.add_argument("--html", metavar="FILE", nargs="?", const=True, default=None,
+                        help="Interactive HTML visualization (default: <project>_viz.html if flag present)")
     parser.add_argument("--events", action="store_true")
     parser.add_argument("--cycles", action="store_true")
     parser.add_argument("--graph-summary", action="store_true")
@@ -40,6 +60,19 @@ def main(argv=None):
     if not root.exists():
         print(f"ERROR: {root}", file=sys.stderr)
         return 1
+
+    # Determine project name and output directory
+    proj_name = _project_name_from_path(root)
+    # Use parent dir if path ends with backend/frontend/src/app/api, otherwise use path itself
+    if root.is_dir() and root.name in ("backend", "frontend", "src", "app", "api"):
+        out_dir = root.parent
+    else:
+        out_dir = root if root.is_dir() else root.parent
+
+    out_path = (out_dir / args.out) if args.out else (out_dir / f"{proj_name}_schema.json")
+    proto_path = out_dir / args.proto if isinstance(args.proto, str) else (out_dir / f"{proj_name}_api.proto" if args.proto is True else None)
+    md_path = out_dir / args.md if isinstance(args.md, str) else (out_dir / f"{proj_name}_report.md" if args.md is True else None)
+    html_path = out_dir / args.html if isinstance(args.html, str) else (out_dir / f"{proj_name}_viz.html" if args.html is True else None)
 
     t0 = time.perf_counter()
     if not args.quiet:
@@ -74,11 +107,13 @@ def main(argv=None):
         print("\n── Event Model ────────────────────────")
         print(em.summary())
 
-    write_json(schema, Path(args.out))
-    if args.proto:
-        write_proto(schema, Path(args.proto))
-    if args.md:
-        write_markdown(schema, Path(args.md))
+    write_json(schema, out_path)
+    if proto_path:
+        write_proto(schema, proto_path)
+    if md_path:
+        write_markdown(schema, md_path)
+    if html_path:
+        write_html(schema, html_path)
     if args.graphml:
         write_graphml(G, Path(args.graphml))
     if args.dot:
@@ -86,6 +121,13 @@ def main(argv=None):
 
     if not args.quiet:
         funcs = schema.all_functions()
+        outputs = [f"   → {out_path.name}"]
+        if proto_path:
+            outputs.append(f"   → {proto_path.name}")
+        if md_path:
+            outputs.append(f"   → {md_path.name}")
+        if html_path:
+            outputs.append(f"   → {html_path.name}")
         print(
             f"\n✅ Gotowe ({time.perf_counter()-t0:.2f}s)\n"
             f"   Modules  : {len(modules)}\n"
@@ -96,7 +138,7 @@ def main(argv=None):
             f"   Workflows: {len(schema.workflows)}\n"
             f"   Rules    : {len(schema.rules)}\n"
             f"   Graph    : {G.number_of_nodes()}N / {G.number_of_edges()}E\n"
-            f"   → {args.out}"
+            + "\n".join(outputs)
         )
     return 0
 

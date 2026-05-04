@@ -1,0 +1,9 @@
+# redup/duplication | 0 groups | 13f 1441L | 2026-05-04
+
+SUMMARY:
+  files_scanned: 13
+  total_lines:   1441
+  dup_groups:    0
+  dup_fragments: 0
+  saved_lines:   0
+  scan_ms:       4577
