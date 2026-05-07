@@ -16,7 +16,7 @@ SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorizati
 ## Metadata
 
 - **name**: `code2schema`
-- **version**: `0.1.1`
+- **version**: `0.1.2`
 - **python_requires**: `>=3.10`
 - **license**: {'text': 'Apache-2.0'}
 - **ai_model**: `openrouter/qwen/qwen3-coder-next`
@@ -36,7 +36,7 @@ SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (
 
 app {
   name: code2schema;
-  version: 0.1.1;
+  version: 0.1.2;
 }
 
 dependencies {
@@ -154,8 +154,8 @@ def main(argv)  # CC=30, fan=32 ⚠
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `_build_graph_data` *(in code2schema.codegen.visualizer)* | 9 | 1 | 22 | **23** |
-| `graph_summary` *(in code2schema.analyzer.graph)* | 8 | 1 | 21 | **22** |
 | `infer_event_model` *(in code2schema.analyzer.events)* | 26 ⚠ | 1 | 21 | **22** |
+| `graph_summary` *(in code2schema.analyzer.graph)* | 8 | 1 | 21 | **22** |
 | `to_markdown` *(in code2schema.codegen)* | 7 | 1 | 16 | **17** |
 | `extract_module` *(in code2schema.core.extractor)* | 5 | 1 | 14 | **15** |
 | `to_proto` *(in code2schema.codegen)* | 3 | 1 | 10 | **11** |
@@ -170,10 +170,10 @@ def main(argv)  # CC=30, fan=32 ⚠
 HUBS[20]:
   code2schema.codegen.visualizer._build_graph_data
     CC=9  in:1  out:22  total:23
-  code2schema.analyzer.graph.graph_summary
-    CC=8  in:1  out:21  total:22
   code2schema.analyzer.events.infer_event_model
     CC=26  in:1  out:21  total:22
+  code2schema.analyzer.graph.graph_summary
+    CC=8  in:1  out:21  total:22
   code2schema.codegen.to_markdown
     CC=7  in:1  out:16  total:17
   code2schema.core.extractor.extract_module
@@ -192,22 +192,22 @@ HUBS[20]:
     CC=7  in:1  out:5  total:6
   code2schema.analyzer.graph.centrality_report
     CC=2  in:1  out:4  total:5
-  code2schema.codegen._safe_proto_name
-    CC=2  in:1  out:3  total:4
-  code2schema.analyzer.events._past_tense
-    CC=1  in:1  out:3  total:4
   code2schema.analyzer.cqrs.build_workflows
     CC=6  in:1  out:3  total:4
+  code2schema.codegen._safe_proto_name
+    CC=2  in:1  out:3  total:4
+  code2schema.core.extractor._path_to_module
+    CC=1  in:1  out:3  total:4
   code2schema.codegen.visualizer.to_html
     CC=1  in:1  out:3  total:4
-  code2schema.core.extractor._path_to_module
+  code2schema.analyzer.events._past_tense
     CC=1  in:1  out:3  total:4
   code2schema.codegen.write_json
     CC=1  in:1  out:2  total:3
-  code2schema.codegen.write_proto
+  code2schema.codegen.write_markdown
     CC=1  in:1  out:2  total:3
-  code2schema.codegen.visualizer.write_html
-    CC=1  in:1  out:2  total:3
+  code2schema.analyzer.graph.layer_violations
+    CC=8  in:1  out:2  total:3
 
 MODULES:
   code2schema.analyzer.cqrs  [5 funcs]
@@ -286,10 +286,10 @@ EDGES:
 HUBS[20]:
   code2schema.codegen.visualizer._build_graph_data
     CC=9  in:1  out:22  total:23
-  code2schema.analyzer.graph.graph_summary
-    CC=8  in:1  out:21  total:22
   code2schema.analyzer.events.infer_event_model
     CC=26  in:1  out:21  total:22
+  code2schema.analyzer.graph.graph_summary
+    CC=8  in:1  out:21  total:22
   code2schema.codegen.to_markdown
     CC=7  in:1  out:16  total:17
   code2schema.core.extractor.extract_module
@@ -308,22 +308,22 @@ HUBS[20]:
     CC=7  in:1  out:5  total:6
   code2schema.analyzer.graph.centrality_report
     CC=2  in:1  out:4  total:5
-  code2schema.codegen._safe_proto_name
-    CC=2  in:1  out:3  total:4
-  code2schema.analyzer.events._past_tense
-    CC=1  in:1  out:3  total:4
   code2schema.analyzer.cqrs.build_workflows
     CC=6  in:1  out:3  total:4
+  code2schema.codegen._safe_proto_name
+    CC=2  in:1  out:3  total:4
+  code2schema.core.extractor._path_to_module
+    CC=1  in:1  out:3  total:4
   code2schema.codegen.visualizer.to_html
     CC=1  in:1  out:3  total:4
-  code2schema.core.extractor._path_to_module
+  code2schema.analyzer.events._past_tense
     CC=1  in:1  out:3  total:4
   code2schema.codegen.write_json
     CC=1  in:1  out:2  total:3
-  code2schema.codegen.write_proto
+  code2schema.codegen.write_markdown
     CC=1  in:1  out:2  total:3
-  code2schema.codegen.visualizer.write_html
-    CC=1  in:1  out:2  total:3
+  code2schema.analyzer.graph.layer_violations
+    CC=8  in:1  out:2  total:3
 
 MODULES:
   code2schema.analyzer.cqrs  [5 funcs]
@@ -383,26 +383,26 @@ EDGES:
 ### Code Analysis (`project/analysis.toon.yaml`)
 
 ```toon markpact:analysis path=project/analysis.toon.yaml
-# code2llm | 24f 113949L | python:11,yaml:9,toml:1,shell:1,txt:1,json:1 | 2026-05-04
-# CC̄=2.1 | critical:2/102 | dups:0 | cycles:0
+# code2llm | 28f 114236L | python:13,yaml:9,json:2,shell:2,toml:1,txt:1 | 2026-05-04
+# CC̄=2.1 | critical:2/103 | dups:0 | cycles:0
 
 HEALTH[2]:
-  🟡 CC    infer_event_model CC=26 (limit:15)
   🟡 CC    main CC=30 (limit:15)
+  🟡 CC    infer_event_model CC=26 (limit:15)
 
 REFACTOR[1]:
   1. split 2 high-CC methods  (CC>15)
 
 PIPELINES[15]:
-  [1] Src [summary]: summary
+  [1] Src [main]: main → _project_name_from_path
       PURITY: 100% pure
-  [2] Src [centrality]: centrality
+  [2] Src [summary]: summary
       PURITY: 100% pure
-  [3] Src [__init__]: __init__
+  [3] Src [centrality]: centrality
       PURITY: 100% pure
-  [4] Src [visit_Import]: visit_Import
+  [4] Src [__init__]: __init__
       PURITY: 100% pure
-  [5] Src [visit_ImportFrom]: visit_ImportFrom
+  [5] Src [visit_Import]: visit_Import
       PURITY: 100% pure
 
 LAYERS:
@@ -420,12 +420,12 @@ LAYERS:
   │ __init__                     1L  0C    0m  CC=0.0    ←0
   │
   project/                        CC̄=0.0    ←in:0  →out:0
-  │ calls.yaml                 295L  0C    0m  CC=0.0    ←0
-  │ map.toon.yaml              113L  0C   55m  CC=0.0    ←0
+  │ calls.yaml                 349L  0C    0m  CC=0.0    ←0
+  │ map.toon.yaml              114L  0C   56m  CC=0.0    ←0
   │ calls.toon.yaml             99L  0C    0m  CC=0.0    ←0
-  │ analysis.toon.yaml          55L  0C    0m  CC=0.0    ←0
-  │ prompt.txt                  49L  0C    0m  CC=0.0    ←0
+  │ analysis.toon.yaml          69L  0C    0m  CC=0.0    ←0
   │ project.toon.yaml           49L  0C    0m  CC=0.0    ←0
+  │ prompt.txt                  47L  0C    0m  CC=0.0    ←0
   │ evolution.toon.yaml         47L  0C    0m  CC=0.0    ←0
   │ duplication.toon.yaml        9L  0C    0m  CC=0.0    ←0
   │
@@ -437,6 +437,12 @@ LAYERS:
   │
   testql-scenarios/               CC̄=0.0    ←in:0  →out:0
   │ generated-cli-tests.testql.toon.yaml    20L  0C    0m  CC=0.0    ←0
+  │
+  docs/                           CC̄=0.0    ←in:0  →out:0
+  │ advanced                    67L  0C    0m  CC=0.0    ←0
+  │ schema-sample.json          56L  0C    0m  CC=0.0    ←0
+  │ basic                       52L  0C    0m  CC=0.0    ←0
+  │ basic.sh                    45L  0C    0m  CC=0.0    ←0
   │
 
 COUPLING:
@@ -457,21 +463,21 @@ EXTERNAL:
 ### Duplication (`project/duplication.toon.yaml`)
 
 ```toon markpact:analysis path=project/duplication.toon.yaml
-# redup/duplication | 0 groups | 11f 1322L | 2026-05-04
+# redup/duplication | 0 groups | 13f 1441L | 2026-05-04
 
 SUMMARY:
-  files_scanned: 11
-  total_lines:   1322
+  files_scanned: 13
+  total_lines:   1441
   dup_groups:    0
   dup_fragments: 0
   saved_lines:   0
-  scan_ms:       4516
+  scan_ms:       4577
 ```
 
 ### Evolution / Churn (`project/evolution.toon.yaml`)
 
 ```toon markpact:analysis path=project/evolution.toon.yaml
-# code2llm/evolution | 102 func | 9f | 2026-05-04
+# code2llm/evolution | 103 func | 9f | 2026-05-04
 
 NEXT[2] (ranked by impact):
   [1] !! SPLIT-FUNC      main  CC=30  fan=32
@@ -517,7 +523,7 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=4.2 → now CC̄=2.1
+  prev CC̄=2.1 → now CC̄=2.1
 ```
 
 ## Intent

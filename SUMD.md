@@ -212,20 +212,20 @@ pip install -e .[dev]
 - **commits**: `conventional` scope=`code2schema`
 - **changelog**: `keep-a-changelog`
 - **build strategies**: `python`, `nodejs`, `rust`
-- **version files**: `pyproject.toml:version`, `code2schema/__init__.py:__version__`
+- **version files**: `VERSION`, `pyproject.toml:version`, `code2schema/__init__.py:__version__`
 
 ## Code Analysis
 
 ### `project/map.toon.yaml`
 
 ```toon markpact:analysis path=project/map.toon.yaml
-# code2schema | 15f 1676L | python:13,less:1,shell:1 | 2026-05-04
-# stats: 57 func | 12 cls | 15 mod | CC̄=4.3 | critical:2 | cycles:0
+# code2schema | 18f 1843L | python:15,shell:2,less:1 | 2026-05-04
+# stats: 57 func | 12 cls | 18 mod | CC̄=4.3 | critical:2 | cycles:0
 # alerts[5]: CC main=30; CC infer_event_model=26; CC _build_graph_data=9; CC build_rich_graph=8; CC layer_violations=8
 # hotspots[5]: main fan=32; extract_module fan=13; infer_event_model fan=11; graph_summary fan=11; _build_graph_data fan=9
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[15]:
+M[18]:
   app.doql.less,75
   code2schema/__init__.py,11
   code2schema/analyzer/__init__.py,2
@@ -238,6 +238,9 @@ M[15]:
   code2schema/core/__init__.py,2
   code2schema/core/extractor.py,161
   code2schema/core/models.py,96
+  docs/examples/api/advanced.py,68
+  docs/examples/api/basic.py,53
+  docs/examples/cli/basic.sh,46
   project.sh,48
   tests/__init__.py,1
   tests/test_code2schema.py,219
@@ -306,6 +309,8 @@ D:
     WorkflowIR:  # Graf wykonania (DAG) dla jednej funkcji-orkiestratora.
     RuleIR:  # Heurystyczna reguła jakości wygenerowana z analizy.
     SchemaIR: all_functions(0),orchestrators(0),commands(0),queries(0)  # Korzeń modelu semantycznego całego projektu.
+  docs/examples/api/advanced.py:
+  docs/examples/api/basic.py:
   tests/__init__.py:
   tests/test_code2schema.py:
     e: sample_file,sample_module,test_extract_module_returns_module,test_function_names,test_side_effects_detected,test_query_no_side_effects,test_role_query,test_role_command,test_role_orchestrator,test_analyze_schema,test_analyze_generates_rules,test_call_graph_has_edges,test_to_json,test_to_proto,test_to_markdown,test_empty_project,test_invalid_syntax_file,test_build_rich_graph,test_no_cycles_in_sample,test_graphml_export,test_dot_export,test_layer_violations,test_event_model_runs,test_event_model_summary
@@ -355,8 +360,8 @@ def main(argv)  # CC=30, fan=32 ⚠
 | Function | CC | in | out | total |
 |----------|----|----|-----|-------|
 | `_build_graph_data` *(in code2schema.codegen.visualizer)* | 9 | 1 | 22 | **23** |
-| `graph_summary` *(in code2schema.analyzer.graph)* | 8 | 1 | 21 | **22** |
 | `infer_event_model` *(in code2schema.analyzer.events)* | 26 ⚠ | 1 | 21 | **22** |
+| `graph_summary` *(in code2schema.analyzer.graph)* | 8 | 1 | 21 | **22** |
 | `to_markdown` *(in code2schema.codegen)* | 7 | 1 | 16 | **17** |
 | `extract_module` *(in code2schema.core.extractor)* | 5 | 1 | 14 | **15** |
 | `to_proto` *(in code2schema.codegen)* | 3 | 1 | 10 | **11** |
@@ -371,10 +376,10 @@ def main(argv)  # CC=30, fan=32 ⚠
 HUBS[20]:
   code2schema.codegen.visualizer._build_graph_data
     CC=9  in:1  out:22  total:23
-  code2schema.analyzer.graph.graph_summary
-    CC=8  in:1  out:21  total:22
   code2schema.analyzer.events.infer_event_model
     CC=26  in:1  out:21  total:22
+  code2schema.analyzer.graph.graph_summary
+    CC=8  in:1  out:21  total:22
   code2schema.codegen.to_markdown
     CC=7  in:1  out:16  total:17
   code2schema.core.extractor.extract_module
@@ -393,22 +398,22 @@ HUBS[20]:
     CC=7  in:1  out:5  total:6
   code2schema.analyzer.graph.centrality_report
     CC=2  in:1  out:4  total:5
-  code2schema.codegen._safe_proto_name
-    CC=2  in:1  out:3  total:4
-  code2schema.analyzer.events._past_tense
-    CC=1  in:1  out:3  total:4
   code2schema.analyzer.cqrs.build_workflows
     CC=6  in:1  out:3  total:4
+  code2schema.codegen._safe_proto_name
+    CC=2  in:1  out:3  total:4
+  code2schema.core.extractor._path_to_module
+    CC=1  in:1  out:3  total:4
   code2schema.codegen.visualizer.to_html
     CC=1  in:1  out:3  total:4
-  code2schema.core.extractor._path_to_module
+  code2schema.analyzer.events._past_tense
     CC=1  in:1  out:3  total:4
   code2schema.codegen.write_json
     CC=1  in:1  out:2  total:3
-  code2schema.codegen.write_proto
+  code2schema.codegen.write_markdown
     CC=1  in:1  out:2  total:3
-  code2schema.codegen.visualizer.write_html
-    CC=1  in:1  out:2  total:3
+  code2schema.analyzer.graph.layer_violations
+    CC=8  in:1  out:2  total:3
 
 MODULES:
   code2schema.analyzer.cqrs  [5 funcs]
