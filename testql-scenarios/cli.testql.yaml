@@ -1,25 +1,29 @@
-SCENARIO: "CLI podstawowe"
-  SHELL "python3 -c \"from code2schema.cli import main; main(['--help'])\""
-  ASSERT_EXIT_CODE 0
-  ASSERT_STDOUT_CONTAINS "usage"
+# Test 1: CLI help
+SHELL "python3 -m code2schema.cli --help" 5000
+ASSERT_EXIT_CODE 0
+ASSERT_STDOUT_CONTAINS "usage"
 
-SCENARIO: "CLI --version"
-  SHELL "python3 -c \"from code2schema.cli import main; main(['--version'])\""
-  ASSERT_EXIT_CODE 0
-  ASSERT_STDOUT_CONTAINS "0.1"
+# Test 2: CLI --version
+SHELL "python3 -m code2schema.cli --version" 5000
+ASSERT_EXIT_CODE 0
+ASSERT_STDOUT_CONTAINS "0.1"
 
-SCENARIO: "Analiza własna (self-analysis)"
-  SHELL "python3 -c \"from code2schema.cli import main; main(['.', '-o', '/tmp/self.json', '-q'])\""
-  ASSERT_EXIT_CODE 0
-  ASSERT_FILE_EXISTS /tmp/self.json
-  ASSERT_JSON_KEY /tmp/self.json ".modules | length > 1"
+# Test 3: Self analysis output
+SHELL "python3 -m code2schema.cli . -o /tmp/self.json -q" 20000
+ASSERT_EXIT_CODE 0
+SHELL "test -f /tmp/self.json" 5000
+ASSERT_EXIT_CODE 0
+SHELL "test $(jq '.modules | length' /tmp/self.json) -gt 10" 5000
+ASSERT_EXIT_CODE 0
 
-SCENARIO: "Proto generation"
-  SHELL "python3 -c \"from code2schema.cli import main; main(['.', '--proto', '/tmp/out.proto', '-q'])\""
-  ASSERT_EXIT_CODE 0
-  ASSERT_FILE_CONTAINS /tmp/out.proto "service Code2Schema"
+# Test 4: Proto generation
+SHELL "python3 -m code2schema.cli . --proto /tmp/out.proto -q" 20000
+ASSERT_EXIT_CODE 0
+SHELL "grep -q 'service Code2Schema' /tmp/out.proto" 5000
+ASSERT_EXIT_CODE 0
 
-SCENARIO: "GraphML export"
-  SHELL "python3 -c \"from code2schema.cli import main; main(['.', '--graphml', '/tmp/graph.graphml', '-q'])\""
-  ASSERT_EXIT_CODE 0
-  ASSERT_FILE_EXISTS /tmp/graph.graphml
+# Test 5: GraphML export
+SHELL "python3 -m code2schema.cli . --graphml /tmp/graph.graphml -q" 20000
+ASSERT_EXIT_CODE 0
+SHELL "test -s /tmp/graph.graphml" 5000
+ASSERT_EXIT_CODE 0

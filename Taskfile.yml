@@ -31,6 +31,12 @@ tasks:
     desc: Bump patch + tag + changelog
     cmd: goal bump patch
 
+  testql:
+    desc: Uruchom scenariusze testql
+    cmds:
+      - testql run testql-scenarios/cli.testql.yaml
+      - testql run testql-scenarios/generated-cli-tests.testql.toon.yaml
+
   ci:
     desc: Full CI pipeline
     deps: [lint, test, analyze]

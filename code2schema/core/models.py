@@ -3,10 +3,11 @@ code2schema.core.models
 ~~~~~~~~~~~~~~~~~~~~~~~
 Intermediate Representation (IR) — język-most między kodem a schematem.
 """
+
 from __future__ import annotations
 
 from enum import Enum
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -28,6 +29,7 @@ class SideEffect(str, Enum):
 
 class FunctionIR(BaseModel):
     """Pojedyncza funkcja w modelu semantycznym."""
+
     name: str
     module: str
     calls: List[str] = Field(default_factory=list)
@@ -45,7 +47,8 @@ class FunctionIR(BaseModel):
 
 class ModuleIR(BaseModel):
     """Moduł (plik .py) z wyekstrahowanymi funkcjami."""
-    name: str          # np. "backend.services.analyzer"
+
+    name: str  # np. "backend.services.analyzer"
     path: str
     functions: List[FunctionIR] = Field(default_factory=list)
     imports: List[str] = Field(default_factory=list)
@@ -59,6 +62,7 @@ class WorkflowStep(BaseModel):
 
 class WorkflowIR(BaseModel):
     """Graf wykonania (DAG) dla jednej funkcji-orkiestratora."""
+
     name: str
     entry: str
     steps: List[WorkflowStep] = Field(default_factory=list)
@@ -66,6 +70,7 @@ class WorkflowIR(BaseModel):
 
 class RuleIR(BaseModel):
     """Heurystyczna reguła jakości wygenerowana z analizy."""
+
     id: str
     target: str
     condition: str
@@ -75,7 +80,10 @@ class RuleIR(BaseModel):
 
 class SchemaIR(BaseModel):
     """Korzeń modelu semantycznego całego projektu."""
-    system: dict = Field(default_factory=lambda: {"type": "code2schema", "version": "0.1"})
+
+    system: dict = Field(
+        default_factory=lambda: {"type": "code2schema", "version": "0.1"}
+    )
     modules: List[ModuleIR] = Field(default_factory=list)
     workflows: List[WorkflowIR] = Field(default_factory=list)
     rules: List[RuleIR] = Field(default_factory=list)

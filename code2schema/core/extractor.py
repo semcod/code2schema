@@ -4,22 +4,54 @@ code2schema.core.extractor
 Ekstrakcja funkcji i importów z plików .py przy użyciu wbudowanego modułu `ast`.
 Bez zewnętrznych zależności — czyste stdlib.
 """
+
 from __future__ import annotations
 
 import ast
-import os
 from pathlib import Path
-from typing import List
 
 from code2schema.core.models import FunctionIR, ModuleIR
 
 
 # ── Wzorce side-effectów ─────────────────────────────────────────────────────
 
-_FILESYSTEM_CALLS: set[str] = {"open", "write", "read", "unlink", "mkdir", "rmdir", "rename"}
-_NETWORK_CALLS: set[str] = {"get", "post", "put", "delete", "patch", "request", "fetch", "connect"}
-_SYSTEM_CALLS: set[str] = {"system", "popen", "subprocess", "Popen", "run", "call", "check_output"}
-_DB_CALLS: set[str] = {"execute", "commit", "rollback", "query", "insert", "update", "delete"}
+_FILESYSTEM_CALLS: set[str] = {
+    "open",
+    "write",
+    "read",
+    "unlink",
+    "mkdir",
+    "rmdir",
+    "rename",
+}
+_NETWORK_CALLS: set[str] = {
+    "get",
+    "post",
+    "put",
+    "delete",
+    "patch",
+    "request",
+    "fetch",
+    "connect",
+}
+_SYSTEM_CALLS: set[str] = {
+    "system",
+    "popen",
+    "subprocess",
+    "Popen",
+    "run",
+    "call",
+    "check_output",
+}
+_DB_CALLS: set[str] = {
+    "execute",
+    "commit",
+    "rollback",
+    "query",
+    "insert",
+    "update",
+    "delete",
+}
 
 _NETWORK_MODULES: set[str] = {"requests", "httpx", "aiohttp", "urllib", "http"}
 _SYSTEM_MODULES: set[str] = {"os", "subprocess", "shutil", "sys"}
@@ -55,7 +87,9 @@ class _FunctionVisitor(ast.NodeVisitor):
         self._process_func(node, is_async=True)
         self.generic_visit(node)
 
-    def _process_func(self, node: ast.FunctionDef | ast.AsyncFunctionDef, is_async: bool) -> None:
+    def _process_func(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef, is_async: bool
+    ) -> None:
         calls = self._collect_calls(node)
         side_effects = self._detect_side_effects(node, calls)
         docstring = ast.get_docstring(node)
@@ -66,7 +100,9 @@ class _FunctionVisitor(ast.NodeVisitor):
             calls=list(dict.fromkeys(calls)),  # deduplicate, preserve order
             fan_out=len(set(calls)),
             side_effects=side_effects,
-            lines=node.end_lineno - node.lineno + 1 if hasattr(node, "end_lineno") else 0,
+            lines=(
+                node.end_lineno - node.lineno + 1 if hasattr(node, "end_lineno") else 0
+            ),
             is_async=is_async,
             docstring=docstring,
         )
@@ -90,9 +126,7 @@ class _FunctionVisitor(ast.NodeVisitor):
             return func_node.attr
         return None
 
-    def _detect_side_effects(
-        self, node: ast.AST, calls: list[str]
-    ) -> list[str]:
+    def _detect_side_effects(self, node: ast.AST, calls: list[str]) -> list[str]:
         from code2schema.core.models import SideEffect
 
         effects: list[SideEffect] = []
@@ -112,6 +146,7 @@ class _FunctionVisitor(ast.NodeVisitor):
 
 # ── Public API ────────────────────────────────────────────────────────────────
 
+
 def extract_module(path: Path) -> ModuleIR | None:
     """Parsuje jeden plik .py i zwraca ModuleIR."""
     try:
@@ -127,7 +162,9 @@ def extract_module(path: Path) -> ModuleIR | None:
     imports = [
         alias.name
         for node in ast.walk(tree)
-        for alias in (node.names if isinstance(node, (ast.Import, ast.ImportFrom)) else [])
+        for alias in (
+            node.names if isinstance(node, (ast.Import, ast.ImportFrom)) else []
+        )
     ]
 
     return ModuleIR(

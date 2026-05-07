@@ -3,6 +3,7 @@ code2schema.analyzer.cqrs
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 CQRS inference + call graph (NetworkX) + reguły jakości.
 """
+
 from __future__ import annotations
 
 from typing import List
@@ -22,12 +23,13 @@ from code2schema.core.models import (
 
 # ── Progi heurystyczne ───────────────────────────────────────────────────────
 
-FAN_OUT_ORCHESTRATOR = 5   # >= N wywołań → orchestrator
-FAN_OUT_HIGH = 10          # alert reguły
-CC_LIMIT = 15              # (placeholder, liczony zewnętrznie)
+FAN_OUT_ORCHESTRATOR = 5  # >= N wywołań → orchestrator
+FAN_OUT_HIGH = 10  # alert reguły
+CC_LIMIT = 15  # (placeholder, liczony zewnętrznie)
 
 
 # ── CQRS Inference ───────────────────────────────────────────────────────────
+
 
 def _infer_role(func: FunctionIR) -> CQRSRole:
     """Klasyfikuje funkcję na podstawie side-effectów i fan-outu."""
@@ -47,6 +49,7 @@ def _infer_role(func: FunctionIR) -> CQRSRole:
 
 
 # ── Call Graph ───────────────────────────────────────────────────────────────
+
 
 def build_call_graph(modules: List[ModuleIR]) -> nx.DiGraph:
     """Buduje skierowany graf wywołań między funkcjami."""
@@ -79,6 +82,7 @@ def centrality(G: nx.DiGraph) -> dict[str, float]:
 
 # ── Workflow DAG ──────────────────────────────────────────────────────────────
 
+
 def build_workflows(modules: List[ModuleIR]) -> List[WorkflowIR]:
     """Buduje DAG wykonania dla każdego orkiestratora."""
     workflows: list[WorkflowIR] = []
@@ -89,8 +93,7 @@ def build_workflows(modules: List[ModuleIR]) -> List[WorkflowIR]:
                     name=f"workflow_{f.name}",
                     entry=f.qualified_name,
                     steps=[
-                        WorkflowStep(callee=c, is_async=f.is_async)
-                        for c in f.calls
+                        WorkflowStep(callee=c, is_async=f.is_async) for c in f.calls
                     ],
                 )
                 workflows.append(workflow)
@@ -99,6 +102,7 @@ def build_workflows(modules: List[ModuleIR]) -> List[WorkflowIR]:
 
 # ── Rules ────────────────────────────────────────────────────────────────────
 
+
 def generate_rules(modules: List[ModuleIR]) -> List[RuleIR]:
     """Generuje heurystyczne reguły jakości na podstawie IR."""
     rules: list[RuleIR] = []
@@ -106,35 +110,41 @@ def generate_rules(modules: List[ModuleIR]) -> List[RuleIR]:
     for mod in modules:
         for f in mod.functions:
             if f.fan_out >= FAN_OUT_HIGH:
-                rules.append(RuleIR(
-                    id="HIGH_FAN_OUT",
-                    target=f.qualified_name,
-                    condition=f"fan_out={f.fan_out} >= {FAN_OUT_HIGH}",
-                    action="refactor_to_service",
-                    severity="error",
-                ))
+                rules.append(
+                    RuleIR(
+                        id="HIGH_FAN_OUT",
+                        target=f.qualified_name,
+                        condition=f"fan_out={f.fan_out} >= {FAN_OUT_HIGH}",
+                        action="refactor_to_service",
+                        severity="error",
+                    )
+                )
             if f.lines > 100:
-                rules.append(RuleIR(
-                    id="LONG_FUNCTION",
-                    target=f.qualified_name,
-                    condition=f"lines={f.lines} > 100",
-                    action="split_function",
-                    severity="warning",
-                ))
-            if (f.role == CQRSRole.QUERY
-                    and SideEffect.NONE not in f.side_effects):
-                rules.append(RuleIR(
-                    id="QUERY_WITH_SIDE_EFFECTS",
-                    target=f.qualified_name,
-                    condition="role=query but has side effects",
-                    action="separate_command_from_query",
-                    severity="warning",
-                ))
+                rules.append(
+                    RuleIR(
+                        id="LONG_FUNCTION",
+                        target=f.qualified_name,
+                        condition=f"lines={f.lines} > 100",
+                        action="split_function",
+                        severity="warning",
+                    )
+                )
+            if f.role == CQRSRole.QUERY and SideEffect.NONE not in f.side_effects:
+                rules.append(
+                    RuleIR(
+                        id="QUERY_WITH_SIDE_EFFECTS",
+                        target=f.qualified_name,
+                        condition="role=query but has side effects",
+                        action="separate_command_from_query",
+                        severity="warning",
+                    )
+                )
 
     return rules
 
 
 # ── Main entry ────────────────────────────────────────────────────────────────
+
 
 def analyze(modules: List[ModuleIR]) -> SchemaIR:
     """Pełna analiza: CQRS + graf + workflow + reguły → SchemaIR."""

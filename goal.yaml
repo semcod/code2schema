@@ -2,6 +2,18 @@
 # Generated: 2026-05-04 14:02:25
 # Documentation: https://github.com/wronai/goal#configuration
 #
+# Roadmap summary (Phase 1 target):
+#   versioning: semver
+#   commits: conventional (scope: code2schema)
+#   changelog: keep-a-changelog
+#   version_files:
+#     - VERSION
+#     - pyproject.toml:version
+#     - code2schema/__init__.py:__version__
+#   publish:
+twine upload dist/code2schema-{version}*     target: pypi
+#     test_target: testpypi
+#
 # This file configures Goal's behavior for:
 # - Version management (semver/calver)
 # - Commit message generation
@@ -232,7 +244,7 @@ strategies:
   nodejs:
     test: npm test
     build: npm run build
-    publish: npm publish
+    publish: twine upload dist/code2schema-{version}*
     publish_enabled: true
     dependencies:
       file: package-lock.json
@@ -240,7 +252,7 @@ strategies:
   rust:
     test: cargo test
     build: cargo build --release
-    publish: cargo publish
+    publish: twine upload dist/code2schema-{version}*
     publish_enabled: true
     dependencies:
       file: Cargo.lock

@@ -7,17 +7,19 @@ Zaawansowana analiza grafu wywołań:
   - detekcja hubów i cykli
   - metryki warstw (layered architecture check)
 """
+
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import networkx as nx
 
-from code2schema.core.models import CQRSRole, ModuleIR, SchemaIR
+from code2schema.core.models import CQRSRole, SchemaIR
 
 
 # ── Builder ───────────────────────────────────────────────────────────────────
+
 
 def build_rich_graph(schema: SchemaIR) -> nx.DiGraph:
     """Buduje pełny graf z atrybutami węzłów (rola, moduł, fan-out)."""
@@ -49,6 +51,7 @@ def build_rich_graph(schema: SchemaIR) -> nx.DiGraph:
 
 
 # ── Metrics ───────────────────────────────────────────────────────────────────
+
 
 def centrality_report(G: nx.DiGraph, top_n: int = 10) -> List[Tuple[str, float]]:
     """PageRank — funkcje najważniejsze architektonicznie."""
@@ -91,6 +94,7 @@ def layer_violations(schema: SchemaIR) -> List[str]:
 
 # ── Export ────────────────────────────────────────────────────────────────────
 
+
 def write_graphml(G: nx.DiGraph, path: Path) -> None:
     """Eksport do GraphML — kompatybilny z Gephi / yEd / Neo4j importer."""
     nx.write_graphml(G, str(path))
@@ -98,7 +102,7 @@ def write_graphml(G: nx.DiGraph, path: Path) -> None:
 
 def write_dot(G: nx.DiGraph, path: Path) -> None:
     """Eksport do DOT — renderowany przez Graphviz."""
-    lines = ["digraph CallGraph {", '  rankdir=LR;', '  node [shape=box];', ""]
+    lines = ["digraph CallGraph {", "  rankdir=LR;", "  node [shape=box];", ""]
     for n, data in G.nodes(data=True):
         role = data.get("role", "unknown")
         color = {

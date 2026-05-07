@@ -4,6 +4,7 @@ code2schema.codegen.visualizer
 Generuje interaktywny HTML z grafem CQRS (D3.js force layout).
 Bez zewnętrznych zależności poza stdlib — D3 ładowany z CDN.
 """
+
 from __future__ import annotations
 
 import json
@@ -14,66 +15,88 @@ from code2schema.core.models import CQRSRole, SchemaIR
 
 # ── Kolory ról ────────────────────────────────────────────────────────────────
 ROLE_COLOR: dict[str, str] = {
-    CQRSRole.QUERY:        "#4ade80",   # zielony
-    CQRSRole.COMMAND:      "#fb923c",   # pomarańczowy
-    CQRSRole.ORCHESTRATOR: "#a78bfa",   # fioletowy
-    CQRSRole.UNKNOWN:      "#94a3b8",   # szary
+    CQRSRole.QUERY: "#4ade80",  # zielony
+    CQRSRole.COMMAND: "#fb923c",  # pomarańczowy
+    CQRSRole.ORCHESTRATOR: "#a78bfa",  # fioletowy
+    CQRSRole.UNKNOWN: "#94a3b8",  # szary
 }
 
 ROLE_EMOJI: dict[str, str] = {
-    CQRSRole.QUERY:        "🔍",
-    CQRSRole.COMMAND:      "✏️",
+    CQRSRole.QUERY: "🔍",
+    CQRSRole.COMMAND: "✏️",
     CQRSRole.ORCHESTRATOR: "🔀",
-    CQRSRole.UNKNOWN:      "❓",
+    CQRSRole.UNKNOWN: "❓",
 }
 
 
-def _build_graph_data(schema: SchemaIR) -> dict[str, Any]:
-    """Buduje nodes/links dla D3 force graph."""
+def _build_nodes(schema: SchemaIR) -> tuple[list[dict], dict[str, int]]:
+    """Buduje listę node'ów i mapę nazwa → index dla D3."""
     nodes: list[dict] = []
-    links: list[dict] = []
     node_ids: dict[str, int] = {}
-
     for func in schema.all_functions():
         idx = len(nodes)
         node_ids[func.name] = idx
-        nodes.append({
-            "id": idx,
-            "name": func.name,
-            "module": func.module,
-            "role": func.role.value,
-            "color": ROLE_COLOR.get(func.role, "#94a3b8"),
-            "emoji": ROLE_EMOJI.get(func.role, "❓"),
-            "fan_out": func.fan_out,
-            "lines": func.lines,
-            "side_effects": [s.value for s in func.side_effects],
-            "is_async": func.is_async,
-        })
+        nodes.append(
+            {
+                "id": idx,
+                "name": func.name,
+                "module": func.module,
+                "role": func.role.value,
+                "color": ROLE_COLOR.get(func.role, "#94a3b8"),
+                "emoji": ROLE_EMOJI.get(func.role, "❓"),
+                "fan_out": func.fan_out,
+                "lines": func.lines,
+                "side_effects": [s.value for s in func.side_effects],
+                "is_async": func.is_async,
+            }
+        )
+    return nodes, node_ids
 
+
+def _build_links(schema: SchemaIR, node_ids: dict[str, int]) -> list[dict]:
+    """Buduje listę krawędzi (caller → callee) dla D3."""
+    links: list[dict] = []
     for func in schema.all_functions():
         src = node_ids.get(func.name)
+        if src is None:
+            continue
         for callee in func.calls:
             dst = node_ids.get(callee)
-            if src is not None and dst is not None and src != dst:
+            if dst is not None and src != dst:
                 links.append({"source": src, "target": dst})
+    return links
 
-    rules_by_target = {}
+
+def _group_rules_by_target(schema: SchemaIR) -> dict[str, list[str]]:
+    """Grupuje rule.id po krótkiej nazwie targetu."""
+    rules_by_target: dict[str, list[str]] = {}
     for r in schema.rules:
         rules_by_target.setdefault(r.target.split(".")[-1], []).append(r.id)
+    return rules_by_target
 
+
+def _build_stats(schema: SchemaIR, function_count: int) -> dict[str, int]:
+    """Buduje sekcję 'stats' wyświetlaną w pasku górnym."""
+    return {
+        "modules": len(schema.modules),
+        "functions": function_count,
+        "commands": len(schema.commands()),
+        "queries": len(schema.queries()),
+        "orchestrators": len(schema.orchestrators()),
+        "workflows": len(schema.workflows),
+        "rules": len(schema.rules),
+    }
+
+
+def _build_graph_data(schema: SchemaIR) -> dict[str, Any]:
+    """Buduje nodes/links/rules/stats dla D3 force graph."""
+    nodes, node_ids = _build_nodes(schema)
+    links = _build_links(schema, node_ids)
     return {
         "nodes": nodes,
         "links": links,
-        "rules": rules_by_target,
-        "stats": {
-            "modules": len(schema.modules),
-            "functions": len(nodes),
-            "commands": len(schema.commands()),
-            "queries": len(schema.queries()),
-            "orchestrators": len(schema.orchestrators()),
-            "workflows": len(schema.workflows),
-            "rules": len(schema.rules),
-        },
+        "rules": _group_rules_by_target(schema),
+        "stats": _build_stats(schema, len(nodes)),
     }
 
 

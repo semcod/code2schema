@@ -7,6 +7,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-05-07
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update project/SUMR.md
+
+### Test
+- Update testql-scenarios/cli.testql.yaml
+- Update testql-scenarios/generated-cli-tests.testql.toon.yaml
+
+### Other
+- Update Taskfile.yml
+- Update VERSION
+- Update code2schema/__init__.py
+- Update code2schema/analyzer/cqrs.py
+- Update code2schema/analyzer/events.py
+- Update code2schema/analyzer/graph.py
+- Update code2schema/cli.py
+- Update code2schema/codegen/__init__.py
+- Update code2schema/codegen/visualizer.py
+- Update code2schema/core/extractor.py
+- ... and 5 more files
+
+## [0.1.5] - 2026-05-07
+
+### Refactor
+- Split `cli._resolve_paths` (CC=11) into `_validate_root` + `_build_output_paths`; `_resolve_paths` kept as thin orchestrator for test compatibility.
+- Split `analyzer.events._find_command_handlers` (CC=9) into `_is_command_candidate` + `_collect_emitted_events` helpers.
+- Split `codegen.visualizer._build_graph_data` (CC=9) into `_build_nodes`, `_build_links`, `_group_rules_by_target`, `_build_stats`.
+
+### Test
+- Strengthen testql self-analysis assertion from `grep -q modules` to `jq '.modules | length' > 10` to catch extractor regressions.
+- Switch testql CLI scenarios to `python3 -m code2schema.cli` so they execute end-to-end against the installed entrypoint.
+
+### Other
+- Add `task testql` target running both testql scenario files.
+- Add roadmap-aligned summary header in `goal.yaml` (versioning, version_files, publish targets).
+- Clean ruff/black baseline across the package (no behavior changes).
+
 ## [0.1.4] - 2026-05-07
 
 ### Docs

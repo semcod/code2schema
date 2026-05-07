@@ -3,6 +3,7 @@ code2schema.cli
 ~~~~~~~~~~~~~~~
 CLI v3 — pełny pipeline.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -13,7 +14,11 @@ from pathlib import Path
 from code2schema.analyzer.cqrs import analyze
 from code2schema.analyzer.events import infer_event_model
 from code2schema.analyzer.graph import (
-    build_rich_graph, detect_cycles, graph_summary, write_dot, write_graphml,
+    build_rich_graph,
+    detect_cycles,
+    graph_summary,
+    write_dot,
+    write_graphml,
 )
 from code2schema.codegen import write_json, write_markdown, write_proto
 from code2schema.codegen.visualizer import write_html
@@ -42,26 +47,53 @@ def _project_name_from_path(path: Path) -> str:
 def _build_parser() -> argparse.ArgumentParser:
     """Build CLI argument parser."""
     from code2schema import __version__
-    parser = argparse.ArgumentParser(prog="code2schema",
-        description="Semantic Compiler: Code → CQRS → Schema / Proto / Graph")
+
+    parser = argparse.ArgumentParser(
+        prog="code2schema",
+        description="Semantic Compiler: Code → CQRS → Schema / Proto / Graph",
+    )
     parser.add_argument("path")
-    parser.add_argument("-o", "--out", metavar="FILE", help="Output JSON schema (default: <project>_schema.json)")
-    parser.add_argument("--proto", metavar="FILE", nargs="?", const=True, default=None,
-                        help="Output .proto file (default: <project>_api.proto if flag present)")
-    parser.add_argument("--md", metavar="FILE", nargs="?", const=True, default=None,
-                        help="Output Markdown report (default: <project>_report.md if flag present)")
+    parser.add_argument(
+        "-o",
+        "--out",
+        metavar="FILE",
+        help="Output JSON schema (default: <project>_schema.json)",
+    )
+    parser.add_argument(
+        "--proto",
+        metavar="FILE",
+        nargs="?",
+        const=True,
+        default=None,
+        help="Output .proto file (default: <project>_api.proto if flag present)",
+    )
+    parser.add_argument(
+        "--md",
+        metavar="FILE",
+        nargs="?",
+        const=True,
+        default=None,
+        help="Output Markdown report (default: <project>_report.md if flag present)",
+    )
     parser.add_argument("--graphml", metavar="FILE")
     parser.add_argument("--dot", metavar="FILE")
-    parser.add_argument("--html", metavar="FILE", nargs="?", const=True, default=None,
-                        help="Interactive HTML visualization (default: <project>_viz.html if flag present)")
+    parser.add_argument(
+        "--html",
+        metavar="FILE",
+        nargs="?",
+        const=True,
+        default=None,
+        help="Interactive HTML visualization (default: <project>_viz.html if flag present)",
+    )
     parser.add_argument("--events", action="store_true")
     parser.add_argument("--cycles", action="store_true")
     parser.add_argument("--graph-summary", action="store_true")
     parser.add_argument("--no-rules", action="store_true")
     parser.add_argument("--exclude", nargs="*", default=[])
     parser.add_argument("-q", "--quiet", action="store_true")
-    parser.add_argument("-V", "--version", action="version",
-                        version=f"%(prog)s {__version__}")
+    parser.add_argument(
+        "-V", "--version", action="version", version=f"%(prog)s {__version__}"
+    )
     return parser
 
 
@@ -89,11 +121,15 @@ def _resolve_optional_path(
     return None
 
 
-def _resolve_paths(
-    args: argparse.Namespace,
-) -> tuple[Path, Path, Path | None, Path | None, Path | None]:
-    """Resolve root, project name and output file paths from CLI args."""
-    root = Path(args.path)
+def _validate_root(args: argparse.Namespace) -> Path:
+    """Return ``Path`` for the analysis root from CLI args."""
+    return Path(args.path)
+
+
+def _build_output_paths(
+    root: Path, args: argparse.Namespace
+) -> tuple[Path, Path | None, Path | None, Path | None]:
+    """Build output file paths (JSON / proto / md / html) for the resolved root."""
     proj_name = _project_name_from_path(root)
     out_dir = _resolve_output_dir(root)
 
@@ -101,6 +137,15 @@ def _resolve_paths(
     proto_path = _resolve_optional_path(out_dir, args.proto, f"{proj_name}_api.proto")
     md_path = _resolve_optional_path(out_dir, args.md, f"{proj_name}_report.md")
     html_path = _resolve_optional_path(out_dir, args.html, f"{proj_name}_viz.html")
+    return out_path, proto_path, md_path, html_path
+
+
+def _resolve_paths(
+    args: argparse.Namespace,
+) -> tuple[Path, Path, Path | None, Path | None, Path | None]:
+    """Resolve root and all output file paths from CLI args."""
+    root = _validate_root(args)
+    out_path, proto_path, md_path, html_path = _build_output_paths(root, args)
     return root, out_path, proto_path, md_path, html_path
 
 

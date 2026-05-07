@@ -3,18 +3,19 @@
 # GENERATED: true
 
 CONFIG[2]{key, value}:
-  cli_command, python -m code2schema
+  cli_command, python3 -m code2schema.cli
   timeout_ms, 10000
 
 # Test 1: CLI help command
-SHELL "python -m code2schema --help" 5000
+SHELL "python3 -m code2schema.cli --help" 5000
 ASSERT_EXIT_CODE 0
 ASSERT_STDOUT_CONTAINS "usage"
 
 # Test 2: CLI version command
-SHELL "python -m code2schema --version" 5000
+SHELL "python3 -m code2schema.cli --version" 5000
 ASSERT_EXIT_CODE 0
+ASSERT_STDOUT_CONTAINS "0.1"
 
 # Test 3: CLI main workflow (dry-run)
-SHELL "python -m code2schema --help" 10000
+SHELL "python3 -m code2schema.cli --help" 10000
 ASSERT_EXIT_CODE 0

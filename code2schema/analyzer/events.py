@@ -6,13 +6,14 @@ Inferencja modelu zdarzeń (DDD / Event Sourcing):
   - klasyfikuje: Command Handler → Event → Event Handler
   - buduje Event Flow Map
 """
+
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
 from typing import List
 
-from code2schema.core.models import CQRSRole, FunctionIR, ModuleIR
+from code2schema.core.models import CQRSRole, ModuleIR
 
 
 # ── Heurystyki nazw ───────────────────────────────────────────────────────────
@@ -33,15 +34,15 @@ _AGGREGATE_PATTERNS = re.compile(
 
 @dataclass
 class DomainEvent:
-    name: str              # np. "UserCreated"
-    emitted_by: str        # qualified_name funkcji emitującej
+    name: str  # np. "UserCreated"
+    emitted_by: str  # qualified_name funkcji emitującej
     handled_by: List[str] = field(default_factory=list)
 
 
 @dataclass
 class CommandHandler:
     name: str
-    command: str           # nazwa wywołania, które traktujemy jako "command"
+    command: str  # nazwa wywołania, które traktujemy jako "command"
     emits: List[str] = field(default_factory=list)
 
 
@@ -61,7 +62,9 @@ class EventModel:
             lines.append("\nDomain Events:")
             for ev in self.events[:15]:
                 handlers = ", ".join(ev.handled_by[:3]) or "—"
-                lines.append(f"  {ev.name:30s} ← {ev.emitted_by.split('.')[-1]:25s} → [{handlers}]")
+                lines.append(
+                    f"  {ev.name:30s} ← {ev.emitted_by.split('.')[-1]:25s} → [{handlers}]"
+                )
         if self.commands:
             lines.append("\nCommand Handlers (top 10):")
             for cmd in self.commands[:10]:
@@ -71,6 +74,7 @@ class EventModel:
 
 
 # ── Inference ─────────────────────────────────────────────────────────────────
+
 
 def _find_emitters(modules: List[ModuleIR]) -> List[DomainEvent]:
     """Krok 1: znajdź funkcje emitujące zdarzenia."""
@@ -122,10 +126,7 @@ def _find_aggregates(modules: List[ModuleIR]) -> List[str]:
     """Krok 4: znajdź moduły będące agregatami (CRUD score >= 2)."""
     aggregates: List[str] = []
     for mod in modules:
-        crud_score = sum(
-            1 for f in mod.functions
-            if _AGGREGATE_PATTERNS.search(f.name)
-        )
+        crud_score = sum(1 for f in mod.functions if _AGGREGATE_PATTERNS.search(f.name))
         if crud_score >= 2:
             aggregates.append(mod.name)
     return aggregates
@@ -145,7 +146,7 @@ def _derive_event_name(func_name: str) -> str:
     # Usuń prefiks czasownikowy
     for prefix in ("on_", "handle_", "emit_", "publish_", "dispatch_", "fire_"):
         if func_name.startswith(prefix):
-            func_name = func_name[len(prefix):]
+            func_name = func_name[len(prefix) :]
             break
 
     parts = func_name.split("_")
@@ -160,9 +161,15 @@ def _derive_event_name(func_name: str) -> str:
 
 def _past_tense(verb: str) -> str:
     _map = {
-        "create": "Created", "update": "Updated", "delete": "Deleted",
-        "save": "Saved", "send": "Sent", "emit": "Emitted",
-        "publish": "Published", "register": "Registered",
-        "process": "Processed", "notify": "Notified",
+        "create": "Created",
+        "update": "Updated",
+        "delete": "Deleted",
+        "save": "Saved",
+        "send": "Sent",
+        "emit": "Emitted",
+        "publish": "Published",
+        "register": "Registered",
+        "process": "Processed",
+        "notify": "Notified",
     }
     return _map.get(verb.lower(), verb.capitalize() + "d")

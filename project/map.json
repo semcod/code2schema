@@ -1,0 +1,2614 @@
+{
+  "system": {
+    "type": "code2schema",
+    "version": "0.1"
+  },
+  "modules": [
+    {
+      "name": "tests.__init__",
+      "path": "tests/__init__.py",
+      "functions": [],
+      "imports": [],
+      "lines": 0
+    },
+    {
+      "name": "tests.test_code2schema",
+      "path": "tests/test_code2schema.py",
+      "functions": [
+        {
+          "name": "sample_file",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "write_text"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "sample_module",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "extract_module"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_extract_module_returns_module",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "len"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_function_names",
+          "module": "tests.test_code2schema",
+          "calls": [],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 0,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_side_effects_detected",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "next"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_query_no_side_effects",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "next"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_role_query",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "next",
+            "_infer_role"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_role_command",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "next",
+            "_infer_role"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_role_orchestrator",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "next",
+            "_infer_role"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_analyze_schema",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "all_functions",
+            "len"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_analyze_generates_rules",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "isinstance"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_call_graph_has_edges",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "build_call_graph",
+            "number_of_nodes"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_to_json",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "to_json"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 6,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_to_proto",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "to_proto"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_to_markdown",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "to_markdown"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_empty_project",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "all_functions"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_invalid_syntax_file",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "write_text",
+            "extract_module"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 5,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_build_rich_graph",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "build_rich_graph",
+            "number_of_nodes"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_no_cycles_in_sample",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "build_rich_graph",
+            "detect_cycles",
+            "isinstance"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 6,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_graphml_export",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "build_rich_graph",
+            "write_graphml",
+            "exists",
+            "stat"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 7,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_dot_export",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "build_rich_graph",
+            "write_dot",
+            "read_text"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 8,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_layer_violations",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "layer_violations",
+            "isinstance"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_event_model_runs",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "infer_event_model",
+            "hasattr"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 6,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_event_model_summary",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "analyze",
+            "infer_event_model",
+            "summary"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 6,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_resolve_paths_for_special_project_dir",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "mkdir",
+            "Namespace",
+            "_resolve_paths",
+            "str"
+          ],
+          "role": "command",
+          "side_effects": [
+            "filesystem"
+          ],
+          "fan_out": 4,
+          "lines": 19,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "test_resolve_paths_for_file_input_with_custom_outputs",
+          "module": "tests.test_code2schema",
+          "calls": [
+            "mkdir",
+            "write_text",
+            "Namespace",
+            "_resolve_paths",
+            "str"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "filesystem"
+          ],
+          "fan_out": 5,
+          "lines": 20,
+          "is_async": false,
+          "docstring": null
+        }
+      ],
+      "imports": [
+        "annotations",
+        "argparse",
+        "ast",
+        "textwrap",
+        "Path",
+        "pytest",
+        "CQRSRole",
+        "SideEffect",
+        "extract_module",
+        "_infer_role",
+        "analyze",
+        "build_call_graph",
+        "_resolve_paths",
+        "to_json",
+        "to_proto",
+        "to_markdown",
+        "build_rich_graph",
+        "centrality_report",
+        "detect_cycles",
+        "hub_nodes",
+        "layer_violations",
+        "write_dot",
+        "write_graphml",
+        "infer_event_model"
+      ],
+      "lines": 265
+    },
+    {
+      "name": "code2schema.cli",
+      "path": "code2schema/cli.py",
+      "functions": [
+        {
+          "name": "_project_name_from_path",
+          "module": "code2schema.cli",
+          "calls": [
+            "enumerate",
+            "reversed",
+            "len"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 13,
+          "is_async": false,
+          "docstring": "Extract project name from path (e.g., /path/to/c2004/backend -> c2004)."
+        },
+        {
+          "name": "_build_parser",
+          "module": "code2schema.cli",
+          "calls": [
+            "ArgumentParser",
+            "add_argument"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 51,
+          "is_async": false,
+          "docstring": "Build CLI argument parser."
+        },
+        {
+          "name": "_resolve_output_dir",
+          "module": "code2schema.cli",
+          "calls": [
+            "is_dir"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 6,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_resolve_required_path",
+          "module": "code2schema.cli",
+          "calls": [],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 0,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_resolve_optional_path",
+          "module": "code2schema.cli",
+          "calls": [
+            "isinstance"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 10,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_validate_root",
+          "module": "code2schema.cli",
+          "calls": [
+            "Path"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "Return ``Path`` for the analysis root from CLI args."
+        },
+        {
+          "name": "_build_output_paths",
+          "module": "code2schema.cli",
+          "calls": [
+            "_project_name_from_path",
+            "_resolve_output_dir",
+            "_resolve_required_path",
+            "_resolve_optional_path"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 12,
+          "is_async": false,
+          "docstring": "Build output file paths (JSON / proto / md / html) for the resolved root."
+        },
+        {
+          "name": "_resolve_paths",
+          "module": "code2schema.cli",
+          "calls": [
+            "_validate_root",
+            "_build_output_paths"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 7,
+          "is_async": false,
+          "docstring": "Resolve root and all output file paths from CLI args."
+        },
+        {
+          "name": "_run_extraction",
+          "module": "code2schema.cli",
+          "calls": [
+            "extract_project",
+            "analyze",
+            "build_rich_graph",
+            "print"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 11,
+          "is_async": false,
+          "docstring": "Parse project and run CQRS analysis. Returns (modules, schema, G) or None on failure."
+        },
+        {
+          "name": "_run_reports",
+          "module": "code2schema.cli",
+          "calls": [
+            "detect_cycles",
+            "print",
+            "infer_event_model",
+            "graph_summary",
+            "summary",
+            "len",
+            "join"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 7,
+          "lines": 19,
+          "is_async": false,
+          "docstring": "Print optional reports: cycles, graph summary, events."
+        },
+        {
+          "name": "_write_outputs",
+          "module": "code2schema.cli",
+          "calls": [
+            "write_json",
+            "write_proto",
+            "write_markdown",
+            "write_html",
+            "write_graphml",
+            "write_dot",
+            "Path"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 7,
+          "lines": 13,
+          "is_async": false,
+          "docstring": "Write all output files (JSON, proto, md, html, graphml, dot)."
+        },
+        {
+          "name": "_print_summary",
+          "module": "code2schema.cli",
+          "calls": [
+            "all_functions",
+            "print",
+            "append",
+            "join",
+            "len",
+            "number_of_nodes",
+            "number_of_edges",
+            "perf_counter",
+            "queries",
+            "commands",
+            "orchestrators"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 11,
+          "lines": 22,
+          "is_async": false,
+          "docstring": "Print final summary with metrics and output file names."
+        },
+        {
+          "name": "main",
+          "module": "code2schema.cli",
+          "calls": [
+            "_build_parser",
+            "parse_args",
+            "_resolve_paths",
+            "perf_counter",
+            "_run_extraction",
+            "_run_reports",
+            "_write_outputs",
+            "exists",
+            "print",
+            "_print_summary"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 10,
+          "lines": 24,
+          "is_async": false,
+          "docstring": null
+        }
+      ],
+      "imports": [
+        "annotations",
+        "argparse",
+        "sys",
+        "time",
+        "Path",
+        "analyze",
+        "infer_event_model",
+        "build_rich_graph",
+        "detect_cycles",
+        "graph_summary",
+        "write_dot",
+        "write_graphml",
+        "write_json",
+        "write_markdown",
+        "write_proto",
+        "write_html",
+        "extract_project",
+        "__version__"
+      ],
+      "lines": 252
+    },
+    {
+      "name": "code2schema.__init__",
+      "path": "code2schema/__init__.py",
+      "functions": [],
+      "imports": [
+        "SchemaIR",
+        "CQRSRole",
+        "FunctionIR",
+        "ModuleIR",
+        "extract_project",
+        "extract_module",
+        "analyze"
+      ],
+      "lines": 16
+    },
+    {
+      "name": "code2schema.analyzer.events",
+      "path": "code2schema/analyzer/events.py",
+      "functions": [
+        {
+          "name": "summary",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "join",
+            "append",
+            "len",
+            "split"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 19,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_find_emitters",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "search",
+            "any",
+            "_derive_event_name",
+            "append",
+            "DomainEvent"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 11,
+          "is_async": false,
+          "docstring": "Krok 1: znajd\u017a funkcje emituj\u0105ce zdarzenia."
+        },
+        {
+          "name": "_find_handlers",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "search",
+            "strip",
+            "append",
+            "replace",
+            "lower"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 9,
+          "is_async": false,
+          "docstring": "Krok 2: dopasuj handlery do zdarze\u0144 (mutuje events in-place)."
+        },
+        {
+          "name": "_find_command_handlers",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "search",
+            "_derive_event_name",
+            "append",
+            "CommandHandler"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 20,
+          "is_async": false,
+          "docstring": "Krok 3: znajd\u017a command handlery i ich emitowane zdarzenia."
+        },
+        {
+          "name": "_find_aggregates",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "sum",
+            "append",
+            "search"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 8,
+          "is_async": false,
+          "docstring": "Krok 4: znajd\u017a modu\u0142y b\u0119d\u0105ce agregatami (CRUD score >= 2)."
+        },
+        {
+          "name": "infer_event_model",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "_find_emitters",
+            "_find_handlers",
+            "_find_command_handlers",
+            "_find_aggregates",
+            "EventModel"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 7,
+          "is_async": false,
+          "docstring": "Przechodzi po IR i buduje model zdarze\u0144."
+        },
+        {
+          "name": "_derive_event_name",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "split",
+            "startswith",
+            "len",
+            "join",
+            "_past_tense",
+            "capitalize"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 6,
+          "lines": 16,
+          "is_async": false,
+          "docstring": "save_user \u2192 UserSaved, create_order \u2192 OrderCreated."
+        },
+        {
+          "name": "_past_tense",
+          "module": "code2schema.analyzer.events",
+          "calls": [
+            "get",
+            "lower",
+            "capitalize"
+          ],
+          "role": "command",
+          "side_effects": [
+            "network"
+          ],
+          "fan_out": 3,
+          "lines": 14,
+          "is_async": false,
+          "docstring": null
+        }
+      ],
+      "imports": [
+        "annotations",
+        "re",
+        "dataclass",
+        "field",
+        "List",
+        "CQRSRole",
+        "ModuleIR"
+      ],
+      "lines": 175
+    },
+    {
+      "name": "code2schema.analyzer.cqrs",
+      "path": "code2schema/analyzer/cqrs.py",
+      "functions": [
+        {
+          "name": "_infer_role",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 0,
+          "lines": 15,
+          "is_async": false,
+          "docstring": "Klasyfikuje funkcj\u0119 na podstawie side-effect\u00f3w i fan-outu."
+        },
+        {
+          "name": "build_call_graph",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [
+            "DiGraph",
+            "set",
+            "add",
+            "add_node",
+            "add_edge"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 17,
+          "is_async": false,
+          "docstring": "Buduje skierowany graf wywo\u0142a\u0144 mi\u0119dzy funkcjami."
+        },
+        {
+          "name": "detect_cycles",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [
+            "list",
+            "simple_cycles"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "Zwraca list\u0119 cykli w grafie wywo\u0142a\u0144."
+        },
+        {
+          "name": "centrality",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [
+            "pagerank",
+            "number_of_edges"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "PageRank \u2014 im wy\u017cszy, tym bardziej 'centralny' w architekturze."
+        },
+        {
+          "name": "build_workflows",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [
+            "WorkflowIR",
+            "append",
+            "WorkflowStep"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 15,
+          "is_async": false,
+          "docstring": "Buduje DAG wykonania dla ka\u017cdego orkiestratora."
+        },
+        {
+          "name": "generate_rules",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [
+            "append",
+            "RuleIR"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 38,
+          "is_async": false,
+          "docstring": "Generuje heurystyczne regu\u0142y jako\u015bci na podstawie IR."
+        },
+        {
+          "name": "analyze",
+          "module": "code2schema.analyzer.cqrs",
+          "calls": [
+            "build_call_graph",
+            "dict",
+            "build_workflows",
+            "generate_rules",
+            "SchemaIR",
+            "out_degree",
+            "_infer_role",
+            "max"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 8,
+          "lines": 28,
+          "is_async": false,
+          "docstring": "Pe\u0142na analiza: CQRS + graf + workflow + regu\u0142y \u2192 SchemaIR."
+        }
+      ],
+      "imports": [
+        "annotations",
+        "List",
+        "networkx",
+        "CQRSRole",
+        "FunctionIR",
+        "ModuleIR",
+        "RuleIR",
+        "SchemaIR",
+        "SideEffect",
+        "WorkflowIR",
+        "WorkflowStep"
+      ],
+      "lines": 176
+    },
+    {
+      "name": "code2schema.analyzer.__init__",
+      "path": "code2schema/analyzer/__init__.py",
+      "functions": [],
+      "imports": [],
+      "lines": 1
+    },
+    {
+      "name": "code2schema.analyzer.graph",
+      "path": "code2schema/analyzer/graph.py",
+      "functions": [
+        {
+          "name": "build_rich_graph",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "DiGraph",
+            "add_node",
+            "get",
+            "int",
+            "add_edge"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "network"
+          ],
+          "fan_out": 5,
+          "lines": 27,
+          "is_async": false,
+          "docstring": "Buduje pe\u0142ny graf z atrybutami w\u0119z\u0142\u00f3w (rola, modu\u0142, fan-out)."
+        },
+        {
+          "name": "centrality_report",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "pagerank",
+            "number_of_edges",
+            "sorted",
+            "items"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 6,
+          "is_async": false,
+          "docstring": "PageRank \u2014 funkcje najwa\u017cniejsze architektonicznie."
+        },
+        {
+          "name": "hub_nodes",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "in_degree"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "W\u0119z\u0142y z fan-in >= threshold \u2014 potencjalne hub-modu\u0142y."
+        },
+        {
+          "name": "detect_cycles",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "list",
+            "simple_cycles"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "layer_violations",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "get",
+            "append"
+          ],
+          "role": "command",
+          "side_effects": [
+            "network"
+          ],
+          "fan_out": 2,
+          "lines": 20,
+          "is_async": false,
+          "docstring": "Prosta heurystyka: query nie powinno wo\u0142a\u0107 command.\nZwraca list\u0119 narusze\u0144."
+        },
+        {
+          "name": "write_graphml",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "write_graphml",
+            "str"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "Eksport do GraphML \u2014 kompatybilny z Gephi / yEd / Neo4j importer."
+        },
+        {
+          "name": "write_dot",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "nodes",
+            "append",
+            "edges",
+            "write_text",
+            "get",
+            "join",
+            "split"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "network"
+          ],
+          "fan_out": 7,
+          "lines": 17,
+          "is_async": false,
+          "docstring": "Eksport do DOT \u2014 renderowany przez Graphviz."
+        },
+        {
+          "name": "graph_summary",
+          "module": "code2schema.analyzer.graph",
+          "calls": [
+            "detect_cycles",
+            "hub_nodes",
+            "centrality_report",
+            "layer_violations",
+            "join",
+            "append",
+            "number_of_nodes",
+            "number_of_edges",
+            "len",
+            "split",
+            "min"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 11,
+          "lines": 29,
+          "is_async": false,
+          "docstring": "Tekstowe podsumowanie grafu."
+        }
+      ],
+      "imports": [
+        "annotations",
+        "Path",
+        "List",
+        "Tuple",
+        "networkx",
+        "CQRSRole",
+        "SchemaIR"
+      ],
+      "lines": 150
+    },
+    {
+      "name": "code2schema.core.__init__",
+      "path": "code2schema/core/__init__.py",
+      "functions": [],
+      "imports": [],
+      "lines": 1
+    },
+    {
+      "name": "code2schema.core.extractor",
+      "path": "code2schema/core/extractor.py",
+      "functions": [
+        {
+          "name": "__init__",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "set"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "visit_Import",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "generic_visit",
+            "add",
+            "split"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "visit_ImportFrom",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "generic_visit",
+            "add",
+            "split"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 4,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "visit_FunctionDef",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "_process_func",
+            "generic_visit"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "visit_AsyncFunctionDef",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "_process_func",
+            "generic_visit"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_process_func",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "_collect_calls",
+            "_detect_side_effects",
+            "get_docstring",
+            "FunctionIR",
+            "append",
+            "list",
+            "len",
+            "fromkeys",
+            "set",
+            "hasattr"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 10,
+          "lines": 20,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_collect_calls",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "walk",
+            "isinstance",
+            "_resolve_call_name",
+            "append"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 9,
+          "is_async": false,
+          "docstring": "Zbiera nazwy wszystkich wywo\u0142a\u0144 funkcji wewn\u0105trz w\u0119z\u0142a."
+        },
+        {
+          "name": "_resolve_call_name",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "isinstance"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 6,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_detect_side_effects",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "set",
+            "append"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 16,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "extract_module",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "_path_to_module",
+            "_FunctionVisitor",
+            "visit",
+            "ModuleIR",
+            "read_text",
+            "parse",
+            "walk",
+            "str",
+            "list",
+            "len",
+            "isinstance",
+            "fromkeys",
+            "splitlines"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 13,
+          "lines": 27,
+          "is_async": false,
+          "docstring": "Parsuje jeden plik .py i zwraca ModuleIR."
+        },
+        {
+          "name": "extract_project",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "set",
+            "rglob",
+            "any",
+            "extract_module",
+            "append"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 13,
+          "is_async": false,
+          "docstring": "Rekurencyjnie przetwarza katalog i zwraca list\u0119 ModuleIR."
+        },
+        {
+          "name": "_path_to_module",
+          "module": "code2schema.core.extractor",
+          "calls": [
+            "list",
+            "join",
+            "with_suffix"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 4,
+          "is_async": false,
+          "docstring": "Konwertuje \u015bcie\u017ck\u0119 pliku na notacj\u0119 modu\u0142u (dots)."
+        }
+      ],
+      "imports": [
+        "annotations",
+        "ast",
+        "Path",
+        "FunctionIR",
+        "ModuleIR",
+        "SideEffect"
+      ],
+      "lines": 197
+    },
+    {
+      "name": "code2schema.core.models",
+      "path": "code2schema/core/models.py",
+      "functions": [
+        {
+          "name": "qualified_name",
+          "module": "code2schema.core.models",
+          "calls": [],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 0,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "all_functions",
+          "module": "code2schema.core.models",
+          "calls": [],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 0,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "orchestrators",
+          "module": "code2schema.core.models",
+          "calls": [
+            "all_functions"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "commands",
+          "module": "code2schema.core.models",
+          "calls": [
+            "all_functions"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "queries",
+          "module": "code2schema.core.models",
+          "calls": [
+            "all_functions"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 1,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        }
+      ],
+      "imports": [
+        "annotations",
+        "Enum",
+        "List",
+        "Optional",
+        "BaseModel",
+        "Field"
+      ],
+      "lines": 103
+    },
+    {
+      "name": "code2schema.codegen.__init__",
+      "path": "code2schema/codegen/__init__.py",
+      "functions": [
+        {
+          "name": "to_json",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "dumps",
+            "model_dump"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "Serializuje SchemaIR do JSON."
+        },
+        {
+          "name": "write_json",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "write_text",
+            "to_json"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "to_proto",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "all_functions",
+            "join",
+            "capitalize",
+            "_safe_proto_name",
+            "append",
+            "len",
+            "commands",
+            "queries"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 8,
+          "lines": 26,
+          "is_async": false,
+          "docstring": "Generuje .proto z modelu CQRS."
+        },
+        {
+          "name": "write_proto",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "write_text",
+            "to_proto"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "to_markdown",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "all_functions",
+            "len",
+            "join",
+            "commands",
+            "queries",
+            "orchestrators",
+            "append"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 7,
+          "lines": 40,
+          "is_async": false,
+          "docstring": "Zwraca czytelne Markdown podsumowanie."
+        },
+        {
+          "name": "write_markdown",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "write_text",
+            "to_markdown"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        },
+        {
+          "name": "_safe_proto_name",
+          "module": "code2schema.codegen.__init__",
+          "calls": [
+            "join",
+            "capitalize",
+            "split"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 3,
+          "is_async": false,
+          "docstring": "CamelCase dla nazw proto RPC."
+        }
+      ],
+      "imports": [
+        "annotations",
+        "json",
+        "Path",
+        "CQRSRole",
+        "SchemaIR"
+      ],
+      "lines": 119
+    },
+    {
+      "name": "code2schema.codegen.visualizer",
+      "path": "code2schema/codegen/visualizer.py",
+      "functions": [
+        {
+          "name": "_build_nodes",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "all_functions",
+            "len",
+            "append",
+            "get"
+          ],
+          "role": "command",
+          "side_effects": [
+            "network"
+          ],
+          "fan_out": 4,
+          "lines": 22,
+          "is_async": false,
+          "docstring": "Buduje list\u0119 node'\u00f3w i map\u0119 nazwa \u2192 index dla D3."
+        },
+        {
+          "name": "_build_links",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "all_functions",
+            "get",
+            "append"
+          ],
+          "role": "command",
+          "side_effects": [
+            "network"
+          ],
+          "fan_out": 3,
+          "lines": 12,
+          "is_async": false,
+          "docstring": "Buduje list\u0119 kraw\u0119dzi (caller \u2192 callee) dla D3."
+        },
+        {
+          "name": "_group_rules_by_target",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "append",
+            "setdefault",
+            "split"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 6,
+          "is_async": false,
+          "docstring": "Grupuje rule.id po kr\u00f3tkiej nazwie targetu."
+        },
+        {
+          "name": "_build_stats",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "len",
+            "commands",
+            "queries",
+            "orchestrators"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 4,
+          "lines": 11,
+          "is_async": false,
+          "docstring": "Buduje sekcj\u0119 'stats' wy\u015bwietlan\u0105 w pasku g\u00f3rnym."
+        },
+        {
+          "name": "_build_graph_data",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "_build_nodes",
+            "_build_links",
+            "_group_rules_by_target",
+            "_build_stats",
+            "len"
+          ],
+          "role": "orchestrator",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 5,
+          "lines": 10,
+          "is_async": false,
+          "docstring": "Buduje nodes/links/rules/stats dla D3 force graph."
+        },
+        {
+          "name": "to_html",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "_build_graph_data",
+            "replace",
+            "dumps"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 3,
+          "lines": 4,
+          "is_async": false,
+          "docstring": "Generuje interaktywny HTML z grafem CQRS."
+        },
+        {
+          "name": "write_html",
+          "module": "code2schema.codegen.visualizer",
+          "calls": [
+            "write_text",
+            "to_html"
+          ],
+          "role": "query",
+          "side_effects": [
+            "none"
+          ],
+          "fan_out": 2,
+          "lines": 2,
+          "is_async": false,
+          "docstring": null
+        }
+      ],
+      "imports": [
+        "annotations",
+        "json",
+        "Path",
+        "Any",
+        "CQRSRole",
+        "SchemaIR"
+      ],
+      "lines": 340
+    },
+    {
+      "name": "docs.examples.api.basic",
+      "path": "docs/examples/api/basic.py",
+      "functions": [],
+      "imports": [
+        "Path",
+        "analyze",
+        "extract_project",
+        "to_json"
+      ],
+      "lines": 10
+    },
+    {
+      "name": "docs.examples.api.advanced",
+      "path": "docs/examples/api/advanced.py",
+      "functions": [],
+      "imports": [
+        "Path",
+        "extract_project",
+        "analyze",
+        "CQRSRole",
+        "build_rich_graph",
+        "hub_nodes",
+        "centrality_report",
+        "layer_violations"
+      ],
+      "lines": 67
+    }
+  ],
+  "workflows": [
+    {
+      "name": "workflow_test_graphml_export",
+      "entry": "tests.test_code2schema.test_graphml_export",
+      "steps": [
+        {
+          "callee": "analyze",
+          "is_async": false
+        },
+        {
+          "callee": "build_rich_graph",
+          "is_async": false
+        },
+        {
+          "callee": "write_graphml",
+          "is_async": false
+        },
+        {
+          "callee": "exists",
+          "is_async": false
+        },
+        {
+          "callee": "stat",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_test_resolve_paths_for_file_input_with_custom_outputs",
+      "entry": "tests.test_code2schema.test_resolve_paths_for_file_input_with_custom_outputs",
+      "steps": [
+        {
+          "callee": "mkdir",
+          "is_async": false
+        },
+        {
+          "callee": "write_text",
+          "is_async": false
+        },
+        {
+          "callee": "Namespace",
+          "is_async": false
+        },
+        {
+          "callee": "_resolve_paths",
+          "is_async": false
+        },
+        {
+          "callee": "str",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__run_reports",
+      "entry": "code2schema.cli._run_reports",
+      "steps": [
+        {
+          "callee": "detect_cycles",
+          "is_async": false
+        },
+        {
+          "callee": "print",
+          "is_async": false
+        },
+        {
+          "callee": "infer_event_model",
+          "is_async": false
+        },
+        {
+          "callee": "graph_summary",
+          "is_async": false
+        },
+        {
+          "callee": "summary",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__write_outputs",
+      "entry": "code2schema.cli._write_outputs",
+      "steps": [
+        {
+          "callee": "write_json",
+          "is_async": false
+        },
+        {
+          "callee": "write_proto",
+          "is_async": false
+        },
+        {
+          "callee": "write_markdown",
+          "is_async": false
+        },
+        {
+          "callee": "write_html",
+          "is_async": false
+        },
+        {
+          "callee": "write_graphml",
+          "is_async": false
+        },
+        {
+          "callee": "write_dot",
+          "is_async": false
+        },
+        {
+          "callee": "Path",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__print_summary",
+      "entry": "code2schema.cli._print_summary",
+      "steps": [
+        {
+          "callee": "all_functions",
+          "is_async": false
+        },
+        {
+          "callee": "print",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "number_of_nodes",
+          "is_async": false
+        },
+        {
+          "callee": "number_of_edges",
+          "is_async": false
+        },
+        {
+          "callee": "perf_counter",
+          "is_async": false
+        },
+        {
+          "callee": "queries",
+          "is_async": false
+        },
+        {
+          "callee": "commands",
+          "is_async": false
+        },
+        {
+          "callee": "orchestrators",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_main",
+      "entry": "code2schema.cli.main",
+      "steps": [
+        {
+          "callee": "_build_parser",
+          "is_async": false
+        },
+        {
+          "callee": "parse_args",
+          "is_async": false
+        },
+        {
+          "callee": "_resolve_paths",
+          "is_async": false
+        },
+        {
+          "callee": "perf_counter",
+          "is_async": false
+        },
+        {
+          "callee": "_run_extraction",
+          "is_async": false
+        },
+        {
+          "callee": "_run_reports",
+          "is_async": false
+        },
+        {
+          "callee": "_write_outputs",
+          "is_async": false
+        },
+        {
+          "callee": "exists",
+          "is_async": false
+        },
+        {
+          "callee": "print",
+          "is_async": false
+        },
+        {
+          "callee": "_print_summary",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__find_emitters",
+      "entry": "code2schema.analyzer.events._find_emitters",
+      "steps": [
+        {
+          "callee": "search",
+          "is_async": false
+        },
+        {
+          "callee": "any",
+          "is_async": false
+        },
+        {
+          "callee": "_derive_event_name",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "DomainEvent",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__find_handlers",
+      "entry": "code2schema.analyzer.events._find_handlers",
+      "steps": [
+        {
+          "callee": "search",
+          "is_async": false
+        },
+        {
+          "callee": "strip",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "replace",
+          "is_async": false
+        },
+        {
+          "callee": "lower",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_infer_event_model",
+      "entry": "code2schema.analyzer.events.infer_event_model",
+      "steps": [
+        {
+          "callee": "_find_emitters",
+          "is_async": false
+        },
+        {
+          "callee": "_find_handlers",
+          "is_async": false
+        },
+        {
+          "callee": "_find_command_handlers",
+          "is_async": false
+        },
+        {
+          "callee": "_find_aggregates",
+          "is_async": false
+        },
+        {
+          "callee": "EventModel",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__derive_event_name",
+      "entry": "code2schema.analyzer.events._derive_event_name",
+      "steps": [
+        {
+          "callee": "split",
+          "is_async": false
+        },
+        {
+          "callee": "startswith",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        },
+        {
+          "callee": "_past_tense",
+          "is_async": false
+        },
+        {
+          "callee": "capitalize",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_build_call_graph",
+      "entry": "code2schema.analyzer.cqrs.build_call_graph",
+      "steps": [
+        {
+          "callee": "DiGraph",
+          "is_async": false
+        },
+        {
+          "callee": "set",
+          "is_async": false
+        },
+        {
+          "callee": "add",
+          "is_async": false
+        },
+        {
+          "callee": "add_node",
+          "is_async": false
+        },
+        {
+          "callee": "add_edge",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_analyze",
+      "entry": "code2schema.analyzer.cqrs.analyze",
+      "steps": [
+        {
+          "callee": "build_call_graph",
+          "is_async": false
+        },
+        {
+          "callee": "dict",
+          "is_async": false
+        },
+        {
+          "callee": "build_workflows",
+          "is_async": false
+        },
+        {
+          "callee": "generate_rules",
+          "is_async": false
+        },
+        {
+          "callee": "SchemaIR",
+          "is_async": false
+        },
+        {
+          "callee": "out_degree",
+          "is_async": false
+        },
+        {
+          "callee": "_infer_role",
+          "is_async": false
+        },
+        {
+          "callee": "max",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_build_rich_graph",
+      "entry": "code2schema.analyzer.graph.build_rich_graph",
+      "steps": [
+        {
+          "callee": "DiGraph",
+          "is_async": false
+        },
+        {
+          "callee": "add_node",
+          "is_async": false
+        },
+        {
+          "callee": "get",
+          "is_async": false
+        },
+        {
+          "callee": "int",
+          "is_async": false
+        },
+        {
+          "callee": "add_edge",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_write_dot",
+      "entry": "code2schema.analyzer.graph.write_dot",
+      "steps": [
+        {
+          "callee": "nodes",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "edges",
+          "is_async": false
+        },
+        {
+          "callee": "write_text",
+          "is_async": false
+        },
+        {
+          "callee": "get",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        },
+        {
+          "callee": "split",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_graph_summary",
+      "entry": "code2schema.analyzer.graph.graph_summary",
+      "steps": [
+        {
+          "callee": "detect_cycles",
+          "is_async": false
+        },
+        {
+          "callee": "hub_nodes",
+          "is_async": false
+        },
+        {
+          "callee": "centrality_report",
+          "is_async": false
+        },
+        {
+          "callee": "layer_violations",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "number_of_nodes",
+          "is_async": false
+        },
+        {
+          "callee": "number_of_edges",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "split",
+          "is_async": false
+        },
+        {
+          "callee": "min",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__process_func",
+      "entry": "code2schema.core.extractor._process_func",
+      "steps": [
+        {
+          "callee": "_collect_calls",
+          "is_async": false
+        },
+        {
+          "callee": "_detect_side_effects",
+          "is_async": false
+        },
+        {
+          "callee": "get_docstring",
+          "is_async": false
+        },
+        {
+          "callee": "FunctionIR",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "list",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "fromkeys",
+          "is_async": false
+        },
+        {
+          "callee": "set",
+          "is_async": false
+        },
+        {
+          "callee": "hasattr",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_extract_module",
+      "entry": "code2schema.core.extractor.extract_module",
+      "steps": [
+        {
+          "callee": "_path_to_module",
+          "is_async": false
+        },
+        {
+          "callee": "_FunctionVisitor",
+          "is_async": false
+        },
+        {
+          "callee": "visit",
+          "is_async": false
+        },
+        {
+          "callee": "ModuleIR",
+          "is_async": false
+        },
+        {
+          "callee": "read_text",
+          "is_async": false
+        },
+        {
+          "callee": "parse",
+          "is_async": false
+        },
+        {
+          "callee": "walk",
+          "is_async": false
+        },
+        {
+          "callee": "str",
+          "is_async": false
+        },
+        {
+          "callee": "list",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "isinstance",
+          "is_async": false
+        },
+        {
+          "callee": "fromkeys",
+          "is_async": false
+        },
+        {
+          "callee": "splitlines",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_extract_project",
+      "entry": "code2schema.core.extractor.extract_project",
+      "steps": [
+        {
+          "callee": "set",
+          "is_async": false
+        },
+        {
+          "callee": "rglob",
+          "is_async": false
+        },
+        {
+          "callee": "any",
+          "is_async": false
+        },
+        {
+          "callee": "extract_module",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_to_proto",
+      "entry": "code2schema.codegen.__init__.to_proto",
+      "steps": [
+        {
+          "callee": "all_functions",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        },
+        {
+          "callee": "capitalize",
+          "is_async": false
+        },
+        {
+          "callee": "_safe_proto_name",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "commands",
+          "is_async": false
+        },
+        {
+          "callee": "queries",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow_to_markdown",
+      "entry": "code2schema.codegen.__init__.to_markdown",
+      "steps": [
+        {
+          "callee": "all_functions",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        },
+        {
+          "callee": "join",
+          "is_async": false
+        },
+        {
+          "callee": "commands",
+          "is_async": false
+        },
+        {
+          "callee": "queries",
+          "is_async": false
+        },
+        {
+          "callee": "orchestrators",
+          "is_async": false
+        },
+        {
+          "callee": "append",
+          "is_async": false
+        }
+      ]
+    },
+    {
+      "name": "workflow__build_graph_data",
+      "entry": "code2schema.codegen.visualizer._build_graph_data",
+      "steps": [
+        {
+          "callee": "_build_nodes",
+          "is_async": false
+        },
+        {
+          "callee": "_build_links",
+          "is_async": false
+        },
+        {
+          "callee": "_group_rules_by_target",
+          "is_async": false
+        },
+        {
+          "callee": "_build_stats",
+          "is_async": false
+        },
+        {
+          "callee": "len",
+          "is_async": false
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "HIGH_FAN_OUT",
+      "target": "code2schema.cli._print_summary",
+      "condition": "fan_out=11 >= 10",
+      "action": "refactor_to_service",
+      "severity": "error"
+    },
+    {
+      "id": "HIGH_FAN_OUT",
+      "target": "code2schema.cli.main",
+      "condition": "fan_out=10 >= 10",
+      "action": "refactor_to_service",
+      "severity": "error"
+    },
+    {
+      "id": "HIGH_FAN_OUT",
+      "target": "code2schema.analyzer.graph.graph_summary",
+      "condition": "fan_out=11 >= 10",
+      "action": "refactor_to_service",
+      "severity": "error"
+    },
+    {
+      "id": "HIGH_FAN_OUT",
+      "target": "code2schema.core.extractor._process_func",
+      "condition": "fan_out=10 >= 10",
+      "action": "refactor_to_service",
+      "severity": "error"
+    },
+    {
+      "id": "HIGH_FAN_OUT",
+      "target": "code2schema.core.extractor.extract_module",
+      "condition": "fan_out=13 >= 10",
+      "action": "refactor_to_service",
+      "severity": "error"
+    }
+  ]
+}
