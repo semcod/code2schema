@@ -1,49 +1,45 @@
-# code2schema | 103 func | 9f | 116781L | python | 2026-05-04
+# code2schema | 57 func | 8f | 113574L | python | 2026-05-07
+# generated in 0.00s
 
 HEALTH:
-  CC̄=2.1  critical=2 (limit:10)  dup=0  cycles=0
+  CC̄=3.9  critical=1 (limit:10)  dup=0  cycles=0
 
-ALERTS[8]:
-  !!! high_fan_out     main = 32 (limit:10)
-  !!! cc_exceeded      main = 30 (limit:15)
-  !!! cc_exceeded      infer_event_model = 26 (limit:15)
-  !!  high_fan_out     infer_event_model = 17 (limit:10)
+ALERTS[6]:
   !   high_fan_out     extract_module = 13 (limit:10)
   !   high_fan_out     _build_graph_data = 13 (limit:10)
   !   high_fan_out     graph_summary = 11 (limit:10)
+  !   high_fan_out     _print_summary = 11 (limit:10)
   !   high_fan_out     _FunctionVisitor._process_func = 10 (limit:10)
+  !   high_fan_out     main = 10 (limit:10)
 
-MODULES[28] (top by size):
+MODULES[23] (top by size):
   M[schema.json] 111256L C:0 F:0 CC↑0 D:0 (json)
-  M[goal.yaml] 510L C:0 F:0 CC↑0 D:0 (yaml)
-  M[project/calls.yaml] 349L C:0 F:0 CC↑0 D:0 (yaml)
+  M[goal.yaml] 511L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2schema/codegen/visualizer.py] 317L C:0 F:3 CC↑9 D:1 (python)
+  M[code2schema/cli.py] 180L C:0 F:8 CC↑11 D:0 (python)
+  M[code2schema/analyzer/events.py] 168L C:3 F:8 CC↑9 D:1 (python)
   M[code2schema/analyzer/cqrs.py] 166L C:0 F:7 CC↑7 D:1 (python)
-  M[code2schema/analyzer/events.py] 162L C:3 F:4 CC↑26 D:1 (python)
   M[code2schema/core/extractor.py] 160L C:1 F:12 CC↑6 D:1 (python)
-  M[code2schema/cli.py] 147L C:0 F:2 CC↑30 D:0 (python)
   M[code2schema/analyzer/graph.py] 146L C:0 F:8 CC↑8 D:1 (python)
   M[code2schema/codegen/__init__.py] 117L C:0 F:7 CC↑7 D:1 (python)
-  M[project/map.toon.yaml] 114L C:0 F:56 CC↑0 D:0 (yaml)
-  M[project/calls.toon.yaml] 99L C:0 F:0 CC↑0 D:0 (yaml)
   M[code2schema/core/models.py] 95L C:8 F:4 CC↑3 D:0 (python)
   M[pyproject.toml] 77L C:0 F:0 CC↑0 D:0 (toml)
-  M[project/analysis.toon.yaml] 69L C:0 F:0 CC↑0 D:0 (yaml)
-  LANGS: python:13/yaml:9/shell:2/json:2/txt:1/toml:1
+  M[docs/examples/api/advanced.py] 67L C:0 F:0 CC↑0 D:0 (python)
+  M[docs/examples/outputs/schema-sample.json] 56L C:0 F:0 CC↑0 D:0 (json)
+  M[docs/examples/api/basic.py] 52L C:0 F:0 CC↑0 D:0 (python)
+  M[project.sh] 48L C:0 F:0 CC↑0 D:0 (shell)
+  LANGS: python:13/shell:3/yaml:3/json:2/yml:1/toml:1
 
 HOTSPOTS[6]:
-  ★ main fan=32  // Orchestrates 32 calls
-  ★ infer_event_model fan=17  // Przechodzi po IR i buduje model zdarzeń.
   ★ extract_module fan=13  // Parsuje jeden plik .py i zwraca ModuleIR.
   ★ _build_graph_data fan=13  // Buduje nodes/links dla D3 force graph.
   ★ graph_summary fan=11  // Tekstowe podsumowanie grafu.
+  ★ _print_summary fan=11  // Print final summary with metrics and output file names.
+  ★ _FunctionVisitor._process_func fan=10  // Analysis pipeline, 10 stages
 
-REFACTOR[6]:
-  [1] H/L Split main (CC=30)
-  [2] H/L Split infer_event_model (CC=26)
-  [3] H/H Split god module goal.yaml (510L, 0 classes)
-  [4] H/H Split god module schema.json (111256L, 0 classes)
-  [5] M/M Reduce main fan-out (currently 32)
+REFACTOR[2]:
+  [1] H/H Split god module goal.yaml (511L, 0 classes)
+  [2] H/H Split god module schema.json (111256L, 0 classes)
 
 EVOLUTION:
-  2026-05-04 CC̄=2.1 crit=2 116781L // Automated analysis
+  2026-05-07 CC̄=3.9 crit=1 113574L // Automated analysis

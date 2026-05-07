@@ -1,14 +1,11 @@
 # Byte-compiled / optimized / DLL files
 .env.example
-.idea/code2schema.iml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/modules.xml
-.idea/vcs.xml
+.idea/
 __pycache__/
 *.py[codz]
 *$py.class
-
+.code2llm_cache
+.idea
 # C extensions
 *.so
 

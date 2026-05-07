@@ -7,4 +7,4 @@ __all__ = [
     "SchemaIR", "CQRSRole", "FunctionIR", "ModuleIR",
     "extract_project", "extract_module", "analyze",
 ]
-__version__ = "0.1.2"
+__version__ = "0.1.4"

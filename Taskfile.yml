@@ -1,0 +1,36 @@
+version: '3'
+
+tasks:
+  test:
+    desc: Uruchom testy z pokryciem
+    cmd: python3 -m pytest tests/ --cov=code2schema --cov-report=term-missing -q
+
+  lint:
+    desc: Ruff + black check
+    cmds:
+      - ruff check code2schema/
+      - black --check code2schema/
+
+  fix:
+    desc: Auto-fix linting + formatowanie
+    cmds:
+      - ruff check --fix code2schema/
+      - black code2schema/
+
+  analyze:
+    desc: Uruchom code2schema na samym sobie (self-analysis)
+    cmd: >
+      python3 -m code2schema.cli . --out project/map.json --md project/SUMR.md
+      --graphml project/graph.graphml --graph-summary --events --cycles
+
+  build:
+    desc: Zbuduj paczkę pip
+    cmd: python3 -m build
+
+  release:patch:
+    desc: Bump patch + tag + changelog
+    cmd: goal bump patch
+
+  ci:
+    desc: Full CI pipeline
+    deps: [lint, test, analyze]

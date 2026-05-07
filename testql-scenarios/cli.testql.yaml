@@ -1,0 +1,25 @@
+SCENARIO: "CLI podstawowe"
+  SHELL "python3 -c \"from code2schema.cli import main; main(['--help'])\""
+  ASSERT_EXIT_CODE 0
+  ASSERT_STDOUT_CONTAINS "usage"
+
+SCENARIO: "CLI --version"
+  SHELL "python3 -c \"from code2schema.cli import main; main(['--version'])\""
+  ASSERT_EXIT_CODE 0
+  ASSERT_STDOUT_CONTAINS "0.1"
+
+SCENARIO: "Analiza własna (self-analysis)"
+  SHELL "python3 -c \"from code2schema.cli import main; main(['.', '-o', '/tmp/self.json', '-q'])\""
+  ASSERT_EXIT_CODE 0
+  ASSERT_FILE_EXISTS /tmp/self.json
+  ASSERT_JSON_KEY /tmp/self.json ".modules | length > 1"
+
+SCENARIO: "Proto generation"
+  SHELL "python3 -c \"from code2schema.cli import main; main(['.', '--proto', '/tmp/out.proto', '-q'])\""
+  ASSERT_EXIT_CODE 0
+  ASSERT_FILE_CONTAINS /tmp/out.proto "service Code2Schema"
+
+SCENARIO: "GraphML export"
+  SHELL "python3 -c \"from code2schema.cli import main; main(['.', '--graphml', '/tmp/graph.graphml', '-q'])\""
+  ASSERT_EXIT_CODE 0
+  ASSERT_FILE_EXISTS /tmp/graph.graphml

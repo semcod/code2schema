@@ -1,6 +1,7 @@
 """Testy jednostkowe code2schema."""
 from __future__ import annotations
 
+import argparse
 import ast
 import textwrap
 from pathlib import Path
@@ -10,6 +11,7 @@ import pytest
 from code2schema.core.models import CQRSRole, SideEffect
 from code2schema.core.extractor import extract_module
 from code2schema.analyzer.cqrs import _infer_role, analyze, build_call_graph
+from code2schema.cli import _resolve_paths
 from code2schema.codegen import to_json, to_proto, to_markdown
 
 
@@ -216,3 +218,48 @@ def test_event_model_summary(sample_module):
     summary = em.summary()
     assert "Commands" in summary
     assert "Domain Events" in summary
+
+
+# ── CLI Paths ─────────────────────────────────────────────────────────────────
+
+def test_resolve_paths_for_special_project_dir(tmp_path: Path):
+    backend_dir = tmp_path / "c2004" / "backend"
+    backend_dir.mkdir(parents=True)
+
+    args = argparse.Namespace(
+        path=str(backend_dir),
+        out=None,
+        proto=True,
+        md=True,
+        html=True,
+    )
+
+    root, out_path, proto_path, md_path, html_path = _resolve_paths(args)
+
+    assert root == backend_dir
+    assert out_path == backend_dir.parent / "c2004_schema.json"
+    assert proto_path == backend_dir.parent / "c2004_api.proto"
+    assert md_path == backend_dir.parent / "c2004_report.md"
+    assert html_path == backend_dir.parent / "c2004_viz.html"
+
+
+def test_resolve_paths_for_file_input_with_custom_outputs(tmp_path: Path):
+    file_path = tmp_path / "repo" / "main.py"
+    file_path.parent.mkdir(parents=True)
+    file_path.write_text("def main():\n    pass\n")
+
+    args = argparse.Namespace(
+        path=str(file_path),
+        out="schema.json",
+        proto="api.proto",
+        md=None,
+        html=None,
+    )
+
+    root, out_path, proto_path, md_path, html_path = _resolve_paths(args)
+
+    assert root == file_path
+    assert out_path == file_path.parent / "schema.json"
+    assert proto_path == file_path.parent / "api.proto"
+    assert md_path is None
+    assert html_path is None

@@ -72,39 +72,33 @@ class EventModel:
 
 # ── Inference ─────────────────────────────────────────────────────────────────
 
-def infer_event_model(modules: List[ModuleIR]) -> EventModel:
-    """Przechodzi po IR i buduje model zdarzeń."""
-    model = EventModel()
-
-    all_funcs: dict[str, FunctionIR] = {}
-    for mod in modules:
-        for f in mod.functions:
-            all_funcs[f.qualified_name] = f
-            all_funcs[f.name] = f  # short alias
-
-    # Krok 1: znajdź emiterów
-    emitters: dict[str, DomainEvent] = {}
+def _find_emitters(modules: List[ModuleIR]) -> List[DomainEvent]:
+    """Krok 1: znajdź funkcje emitujące zdarzenia."""
+    events: List[DomainEvent] = []
     for mod in modules:
         for f in mod.functions:
             if _EVENT_EMIT_PATTERNS.search(f.name) or any(
                 _EVENT_EMIT_PATTERNS.search(c) for c in f.calls
             ):
                 event_name = _derive_event_name(f.name)
-                ev = DomainEvent(name=event_name, emitted_by=f.qualified_name)
-                emitters[f.name] = ev
-                model.events.append(ev)
+                events.append(DomainEvent(name=event_name, emitted_by=f.qualified_name))
+    return events
 
-    # Krok 2: znajdź handlerów
+
+def _find_handlers(events: List[DomainEvent], modules: List[ModuleIR]) -> None:
+    """Krok 2: dopasuj handlery do zdarzeń (mutuje events in-place)."""
     for mod in modules:
         for f in mod.functions:
             if _EVENT_HANDLER_PATTERNS.search(f.name):
-                # sprawdź, czy handler pasuje do jakiegoś zdarzenia
-                for ev in model.events:
+                for ev in events:
                     keyword = ev.name.lower().replace("event", "").strip()
                     if keyword and keyword in f.name.lower():
                         ev.handled_by.append(f.qualified_name)
 
-    # Krok 3: command handlers
+
+def _find_command_handlers(modules: List[ModuleIR]) -> List[CommandHandler]:
+    """Krok 3: znajdź command handlery i ich emitowane zdarzenia."""
+    commands: List[CommandHandler] = []
     for mod in modules:
         for f in mod.functions:
             if f.role == CQRSRole.COMMAND or _AGGREGATE_PATTERNS.search(f.name):
@@ -114,24 +108,36 @@ def infer_event_model(modules: List[ModuleIR]) -> EventModel:
                     if _EVENT_EMIT_PATTERNS.search(c)
                 ]
                 if emits or f.role == CQRSRole.COMMAND:
-                    model.commands.append(
+                    commands.append(
                         CommandHandler(
                             name=f.qualified_name,
                             command=f.name,
                             emits=emits,
                         )
                     )
+    return commands
 
-    # Krok 4: agregaty — moduły z operacjami CRUD
+
+def _find_aggregates(modules: List[ModuleIR]) -> List[str]:
+    """Krok 4: znajdź moduły będące agregatami (CRUD score >= 2)."""
+    aggregates: List[str] = []
     for mod in modules:
         crud_score = sum(
             1 for f in mod.functions
             if _AGGREGATE_PATTERNS.search(f.name)
         )
         if crud_score >= 2:
-            model.aggregates.append(mod.name)
+            aggregates.append(mod.name)
+    return aggregates
 
-    return model
+
+def infer_event_model(modules: List[ModuleIR]) -> EventModel:
+    """Przechodzi po IR i buduje model zdarzeń."""
+    events = _find_emitters(modules)
+    _find_handlers(events, modules)
+    commands = _find_command_handlers(modules)
+    aggregates = _find_aggregates(modules)
+    return EventModel(commands=commands, events=events, aggregates=aggregates)
 
 
 def _derive_event_name(func_name: str) -> str:

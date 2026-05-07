@@ -1,17 +1,17 @@
-# code2schema | 18f 1843L | python:15,shell:2,less:1 | 2026-05-04
-# stats: 57 func | 12 cls | 18 mod | CC̄=4.3 | critical:2 | cycles:0
-# alerts[5]: CC main=30; CC infer_event_model=26; CC _build_graph_data=9; CC build_rich_graph=8; CC layer_violations=8
-# hotspots[5]: main fan=32; extract_module fan=13; infer_event_model fan=11; graph_summary fan=11; _build_graph_data fan=9
+# code2schema | 19f 1915L | python:15,shell:3,less:1 | 2026-05-07
+# stats: 67 func | 12 cls | 19 mod | CC̄=3.8 | critical:1 | cycles:0
+# alerts[5]: CC _resolve_paths=11; CC _find_command_handlers=9; CC _build_graph_data=9; CC build_rich_graph=8; CC layer_violations=8
+# hotspots[5]: extract_module fan=13; graph_summary fan=11; _print_summary fan=11; main fan=10; _build_graph_data fan=9
 # evolution: baseline
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[18]:
-  app.doql.less,75
+M[19]:
+  app.doql.less,87
   code2schema/__init__.py,11
   code2schema/analyzer/__init__.py,2
   code2schema/analyzer/cqrs.py,167
-  code2schema/analyzer/events.py,163
+  code2schema/analyzer/events.py,169
   code2schema/analyzer/graph.py,147
-  code2schema/cli.py,148
+  code2schema/cli.py,181
   code2schema/codegen/__init__.py,118
   code2schema/codegen/visualizer.py,318
   code2schema/core/__init__.py,2
@@ -20,6 +20,7 @@ M[18]:
   docs/examples/api/advanced.py,68
   docs/examples/api/basic.py,53
   docs/examples/cli/basic.sh,46
+  docs/examples/cli/semcod.sh,21
   project.sh,48
   tests/__init__.py,1
   tests/test_code2schema.py,219
@@ -36,10 +37,14 @@ D:
     generate_rules(modules)
     analyze(modules)
   code2schema/analyzer/events.py:
-    e: infer_event_model,_derive_event_name,_past_tense,DomainEvent,CommandHandler,EventModel
+    e: _find_emitters,_find_handlers,_find_command_handlers,_find_aggregates,infer_event_model,_derive_event_name,_past_tense,DomainEvent,CommandHandler,EventModel
     DomainEvent:
     CommandHandler:
     EventModel: summary(0)
+    _find_emitters(modules)
+    _find_handlers(events;modules)
+    _find_command_handlers(modules)
+    _find_aggregates(modules)
     infer_event_model(modules)
     _derive_event_name(func_name)
     _past_tense(verb)
@@ -54,8 +59,14 @@ D:
     write_dot(G;path)
     graph_summary(G;schema)
   code2schema/cli.py:
-    e: _project_name_from_path,main
+    e: _project_name_from_path,_build_parser,_resolve_paths,_run_extraction,_run_reports,_write_outputs,_print_summary,main
     _project_name_from_path(path)
+    _build_parser()
+    _resolve_paths(args)
+    _run_extraction(args;root)
+    _run_reports(args;modules;schema;G)
+    _write_outputs(args;schema;G;out_path;proto_path;md_path;html_path)
+    _print_summary(modules;schema;G;t0;out_path;proto_path;md_path;html_path)
     main(argv)
   code2schema/codegen/__init__.py:
     e: to_json,write_json,to_proto,write_proto,to_markdown,write_markdown,_safe_proto_name

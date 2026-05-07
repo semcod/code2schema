@@ -1,21 +1,18 @@
 # System Architecture Analysis
+<!-- generated in 0.00s -->
 
 ## Overview
 
 - **Project**: /home/tom/github/semcod/code2schema
 - **Primary Language**: python
-- **Languages**: python: 13, yaml: 9, json: 2, shell: 2, toml: 1
+- **Languages**: python: 13, yaml: 3, shell: 3, json: 2, toml: 1
 - **Analysis Mode**: static
-- **Total Functions**: 103
+- **Total Functions**: 57
 - **Total Classes**: 12
-- **Modules**: 28
-- **Entry Points**: 72
+- **Modules**: 23
+- **Entry Points**: 16
 
 ## Architecture by Module
-
-### project.map.toon
-- **Functions**: 57
-- **File**: `map.toon.yaml`
 
 ### code2schema.core.extractor
 - **Functions**: 12
@@ -26,6 +23,15 @@
 - **Functions**: 8
 - **File**: `graph.py`
 
+### code2schema.cli
+- **Functions**: 8
+- **File**: `cli.py`
+
+### code2schema.analyzer.events
+- **Functions**: 8
+- **Classes**: 3
+- **File**: `events.py`
+
 ### code2schema.analyzer.cqrs
 - **Functions**: 7
 - **File**: `cqrs.py`
@@ -33,11 +39,6 @@
 ### code2schema.codegen
 - **Functions**: 7
 - **File**: `__init__.py`
-
-### code2schema.analyzer.events
-- **Functions**: 4
-- **Classes**: 3
-- **File**: `events.py`
 
 ### code2schema.core.models
 - **Functions**: 4
@@ -48,16 +49,12 @@
 - **Functions**: 3
 - **File**: `visualizer.py`
 
-### code2schema.cli
-- **Functions**: 2
-- **File**: `cli.py`
-
 ## Key Entry Points
 
 Main execution flows into the system:
 
 ### code2schema.cli.main
-- **Calls**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
+- **Calls**: code2schema.cli._build_parser, parser.parse_args, code2schema.cli._resolve_paths, time.perf_counter, code2schema.cli._run_extraction, code2schema.cli._run_reports, code2schema.cli._write_outputs, root.exists
 
 ### code2schema.analyzer.events.EventModel.summary
 - **Calls**: None.join, lines.append, lines.append, lines.append, lines.append, len, len, len
@@ -105,34 +102,6 @@ Main execution flows into the system:
 
 ### code2schema.core.models.SchemaIR.all_functions
 
-### project.map.toon._infer_role
-
-### project.map.toon.build_call_graph
-
-### project.map.toon.detect_cycles
-
-### project.map.toon.centrality
-
-### project.map.toon.build_workflows
-
-### project.map.toon.generate_rules
-
-### project.map.toon.analyze
-
-### project.map.toon.infer_event_model
-
-### project.map.toon._derive_event_name
-
-### project.map.toon._past_tense
-
-### project.map.toon.build_rich_graph
-
-### project.map.toon.centrality_report
-
-### project.map.toon.hub_nodes
-
-### project.map.toon.layer_violations
-
 ## Process Flows
 
 Key execution flows identified:
@@ -140,6 +109,9 @@ Key execution flows identified:
 ### Flow 1: main
 ```
 main [code2schema.cli]
+  └─> _build_parser
+  └─> _resolve_paths
+      └─> _project_name_from_path
 ```
 
 ### Flow 2: summary
@@ -201,21 +173,15 @@ visit_AsyncFunctionDef [code2schema.core.extractor._FunctionVisitor]
 - **Key Methods**: code2schema.core.models.SchemaIR.all_functions, code2schema.core.models.SchemaIR.orchestrators, code2schema.core.models.SchemaIR.commands, code2schema.core.models.SchemaIR.queries
 - **Inherits**: BaseModel
 
-### code2schema.analyzer.events.EventModel
-- **Methods**: 1
-- **Key Methods**: code2schema.analyzer.events.EventModel.summary
-
 ### code2schema.core.models.FunctionIR
 > Pojedyncza funkcja w modelu semantycznym.
 - **Methods**: 1
 - **Key Methods**: code2schema.core.models.FunctionIR.qualified_name
 - **Inherits**: BaseModel
 
-### code2schema.analyzer.events.DomainEvent
-- **Methods**: 0
-
-### code2schema.analyzer.events.CommandHandler
-- **Methods**: 0
+### code2schema.analyzer.events.EventModel
+- **Methods**: 1
+- **Key Methods**: code2schema.analyzer.events.EventModel.summary
 
 ### code2schema.core.models.CQRSRole
 - **Methods**: 0
@@ -244,6 +210,12 @@ visit_AsyncFunctionDef [code2schema.core.extractor._FunctionVisitor]
 - **Methods**: 0
 - **Inherits**: BaseModel
 
+### code2schema.analyzer.events.DomainEvent
+- **Methods**: 0
+
+### code2schema.analyzer.events.CommandHandler
+- **Methods**: 0
+
 ## Data Transformation Functions
 
 Key functions that process and transform data:
@@ -251,23 +223,27 @@ Key functions that process and transform data:
 ### code2schema.core.extractor._FunctionVisitor._process_func
 - **Output to**: self._collect_calls, self._detect_side_effects, ast.get_docstring, FunctionIR, self.functions.append
 
+### code2schema.cli._build_parser
+> Build CLI argument parser.
+- **Output to**: argparse.ArgumentParser, parser.add_argument, parser.add_argument, parser.add_argument, parser.add_argument
+
 ## Public API Surface
 
 Functions exposed as public API (no underscore prefix):
 
-- `code2schema.cli.main` - 70 calls
-- `code2schema.analyzer.events.infer_event_model` - 21 calls
 - `code2schema.analyzer.graph.graph_summary` - 21 calls
 - `code2schema.codegen.to_markdown` - 16 calls
 - `code2schema.core.extractor.extract_module` - 14 calls
-- `code2schema.analyzer.events.EventModel.summary` - 11 calls
 - `code2schema.analyzer.graph.write_dot` - 11 calls
+- `code2schema.cli.main` - 11 calls
+- `code2schema.analyzer.events.EventModel.summary` - 11 calls
 - `code2schema.codegen.to_proto` - 10 calls
 - `code2schema.analyzer.cqrs.analyze` - 9 calls
 - `code2schema.analyzer.cqrs.generate_rules` - 6 calls
 - `code2schema.analyzer.cqrs.build_call_graph` - 5 calls
 - `code2schema.analyzer.graph.build_rich_graph` - 5 calls
 - `code2schema.core.extractor.extract_project` - 5 calls
+- `code2schema.analyzer.events.infer_event_model` - 5 calls
 - `code2schema.analyzer.graph.centrality_report` - 4 calls
 - `code2schema.analyzer.cqrs.build_workflows` - 3 calls
 - `code2schema.core.extractor._FunctionVisitor.visit_Import` - 3 calls
@@ -290,11 +266,6 @@ Functions exposed as public API (no underscore prefix):
 - `code2schema.core.models.SchemaIR.commands` - 1 calls
 - `code2schema.core.models.SchemaIR.queries` - 1 calls
 - `code2schema.core.models.SchemaIR.all_functions` - 0 calls
-- `project.map.toon.build_call_graph` - 0 calls
-- `project.map.toon.detect_cycles` - 0 calls
-- `project.map.toon.centrality` - 0 calls
-- `project.map.toon.build_workflows` - 0 calls
-- `project.map.toon.generate_rules` - 0 calls
 
 ## System Interactions
 
@@ -302,8 +273,11 @@ How components interact:
 
 ```mermaid
 graph TD
-    main --> ArgumentParser
-    main --> add_argument
+    main --> _build_parser
+    main --> parse_args
+    main --> _resolve_paths
+    main --> perf_counter
+    main --> _run_extraction
     summary --> join
     summary --> append
     _process_func --> _collect_calls
@@ -329,9 +303,6 @@ graph TD
     visit_FunctionDef --> generic_visit
     visit_AsyncFunctionD --> _process_func
     visit_AsyncFunctionD --> generic_visit
-    _resolve_call_name --> isinstance
-    __init__ --> set
-    orchestrators --> all_functions
 ```
 
 ## Reverse Engineering Guidelines

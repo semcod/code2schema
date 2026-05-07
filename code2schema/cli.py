@@ -20,22 +20,28 @@ from code2schema.codegen.visualizer import write_html
 from code2schema.core.extractor import extract_project
 
 
+_SPECIAL_PROJECT_DIRS = {"backend", "frontend", "src", "app", "api"}
+_GENERIC_PATH_PARTS = {"home", "github", "workspace", "projects", "src"}
+
+
 def _project_name_from_path(path: Path) -> str:
     """Extract project name from path (e.g., /path/to/c2004/backend -> c2004)."""
     # Try to find a meaningful name from the path
     parts = path.parts
     for i, part in enumerate(reversed(parts)):
-        if part in ("backend", "frontend", "src", "app", "api"):
+        if part in _SPECIAL_PROJECT_DIRS:
             # Use parent directory name
             if i < len(parts) - 1:
                 return parts[-(i + 2)]
         # Skip common generic names
-        if part not in ("home", "github", "workspace", "projects", "src"):
+        if part not in _GENERIC_PATH_PARTS:
             return part
     return path.name or "project"
 
 
-def main(argv=None):
+def _build_parser() -> argparse.ArgumentParser:
+    """Build CLI argument parser."""
+    from code2schema import __version__
     parser = argparse.ArgumentParser(prog="code2schema",
         description="Semantic Compiler: Code → CQRS → Schema / Proto / Graph")
     parser.add_argument("path")
@@ -54,41 +60,65 @@ def main(argv=None):
     parser.add_argument("--no-rules", action="store_true")
     parser.add_argument("--exclude", nargs="*", default=[])
     parser.add_argument("-q", "--quiet", action="store_true")
-    args = parser.parse_args(argv)
+    parser.add_argument("-V", "--version", action="version",
+                        version=f"%(prog)s {__version__}")
+    return parser
 
+
+def _resolve_output_dir(root: Path) -> Path:
+    if not root.is_dir():
+        return root.parent
+    if root.name in _SPECIAL_PROJECT_DIRS:
+        return root.parent
+    return root
+
+
+def _resolve_required_path(out_dir: Path, value: str | None, default_name: str) -> Path:
+    return out_dir / (value or default_name)
+
+
+def _resolve_optional_path(
+    out_dir: Path,
+    value: str | bool | None,
+    default_name: str,
+) -> Path | None:
+    if isinstance(value, str):
+        return out_dir / value
+    if value is True:
+        return out_dir / default_name
+    return None
+
+
+def _resolve_paths(
+    args: argparse.Namespace,
+) -> tuple[Path, Path, Path | None, Path | None, Path | None]:
+    """Resolve root, project name and output file paths from CLI args."""
     root = Path(args.path)
-    if not root.exists():
-        print(f"ERROR: {root}", file=sys.stderr)
-        return 1
-
-    # Determine project name and output directory
     proj_name = _project_name_from_path(root)
-    # Use parent dir if path ends with backend/frontend/src/app/api, otherwise use path itself
-    if root.is_dir() and root.name in ("backend", "frontend", "src", "app", "api"):
-        out_dir = root.parent
-    else:
-        out_dir = root if root.is_dir() else root.parent
+    out_dir = _resolve_output_dir(root)
 
-    out_path = (out_dir / args.out) if args.out else (out_dir / f"{proj_name}_schema.json")
-    proto_path = out_dir / args.proto if isinstance(args.proto, str) else (out_dir / f"{proj_name}_api.proto" if args.proto is True else None)
-    md_path = out_dir / args.md if isinstance(args.md, str) else (out_dir / f"{proj_name}_report.md" if args.md is True else None)
-    html_path = out_dir / args.html if isinstance(args.html, str) else (out_dir / f"{proj_name}_viz.html" if args.html is True else None)
+    out_path = _resolve_required_path(out_dir, args.out, f"{proj_name}_schema.json")
+    proto_path = _resolve_optional_path(out_dir, args.proto, f"{proj_name}_api.proto")
+    md_path = _resolve_optional_path(out_dir, args.md, f"{proj_name}_report.md")
+    html_path = _resolve_optional_path(out_dir, args.html, f"{proj_name}_viz.html")
+    return root, out_path, proto_path, md_path, html_path
 
-    t0 = time.perf_counter()
-    if not args.quiet:
-        print(f"⏳ Parsing: {root}")
 
+def _run_extraction(args, root):
+    """Parse project and run CQRS analysis. Returns (modules, schema, G) or None on failure."""
     modules = extract_project(root, exclude=args.exclude or None)
     if not modules:
         print("ERROR: Brak plików .py.", file=sys.stderr)
-        return 1
-
+        return None
     schema = analyze(modules)
     if args.no_rules:
         schema.rules = []
-
     G = build_rich_graph(schema)
+    return modules, schema, G
 
+
+def _run_reports(args, modules, schema, G):
+    """Print optional reports: cycles, graph summary, events."""
     if args.cycles:
         cycles = detect_cycles(G)
         if cycles:
@@ -107,6 +137,9 @@ def main(argv=None):
         print("\n── Event Model ────────────────────────")
         print(em.summary())
 
+
+def _write_outputs(args, schema, G, out_path, proto_path, md_path, html_path):
+    """Write all output files (JSON, proto, md, html, graphml, dot)."""
     write_json(schema, out_path)
     if proto_path:
         write_proto(schema, proto_path)
@@ -119,27 +152,54 @@ def main(argv=None):
     if args.dot:
         write_dot(G, Path(args.dot))
 
+
+def _print_summary(modules, schema, G, t0, out_path, proto_path, md_path, html_path):
+    """Print final summary with metrics and output file names."""
+    funcs = schema.all_functions()
+    outputs = [f"   → {out_path.name}"]
+    if proto_path:
+        outputs.append(f"   → {proto_path.name}")
+    if md_path:
+        outputs.append(f"   → {md_path.name}")
+    if html_path:
+        outputs.append(f"   → {html_path.name}")
+    print(
+        f"\n✅ Gotowe ({time.perf_counter()-t0:.2f}s)\n"
+        f"   Modules  : {len(modules)}\n"
+        f"   Functions: {len(funcs)}\n"
+        f"   Queries  : {len(schema.queries())}\n"
+        f"   Commands : {len(schema.commands())}\n"
+        f"   Orchest. : {len(schema.orchestrators())}\n"
+        f"   Workflows: {len(schema.workflows)}\n"
+        f"   Rules    : {len(schema.rules)}\n"
+        f"   Graph    : {G.number_of_nodes()}N / {G.number_of_edges()}E\n"
+        + "\n".join(outputs)
+    )
+
+
+def main(argv=None):
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+
+    root, out_path, proto_path, md_path, html_path = _resolve_paths(args)
+    if not root.exists():
+        print(f"ERROR: {root}", file=sys.stderr)
+        return 1
+
+    t0 = time.perf_counter()
     if not args.quiet:
-        funcs = schema.all_functions()
-        outputs = [f"   → {out_path.name}"]
-        if proto_path:
-            outputs.append(f"   → {proto_path.name}")
-        if md_path:
-            outputs.append(f"   → {md_path.name}")
-        if html_path:
-            outputs.append(f"   → {html_path.name}")
-        print(
-            f"\n✅ Gotowe ({time.perf_counter()-t0:.2f}s)\n"
-            f"   Modules  : {len(modules)}\n"
-            f"   Functions: {len(funcs)}\n"
-            f"   Queries  : {len(schema.queries())}\n"
-            f"   Commands : {len(schema.commands())}\n"
-            f"   Orchest. : {len(schema.orchestrators())}\n"
-            f"   Workflows: {len(schema.workflows)}\n"
-            f"   Rules    : {len(schema.rules)}\n"
-            f"   Graph    : {G.number_of_nodes()}N / {G.number_of_edges()}E\n"
-            + "\n".join(outputs)
-        )
+        print(f"⏳ Parsing: {root}")
+
+    result = _run_extraction(args, root)
+    if result is None:
+        return 1
+    modules, schema, G = result
+
+    _run_reports(args, modules, schema, G)
+    _write_outputs(args, schema, G, out_path, proto_path, md_path, html_path)
+
+    if not args.quiet:
+        _print_summary(modules, schema, G, t0, out_path, proto_path, md_path, html_path)
     return 0
 
 

@@ -6,7 +6,8 @@
 docs/
 ├── examples/
 │   ├── cli/
-│   │   └── basic.sh          # CLI usage examples
+│   │   ├── basic.sh          # CLI usage examples
+│   │   └── semcod.sh         # Semcod project analysis
 │   ├── api/
 │   │   ├── basic.py          # Basic Python API
 │   │   └── advanced.py       # Advanced Python API
@@ -19,10 +20,12 @@ docs/
 ## Quick Links
 
 - [CLI Examples](examples/cli/basic.sh) - Command-line usage patterns
+- [Semcod CLI](examples/cli/semcod.sh) - Analysis for semcod `www/`
 - [Python API Basic](examples/api/basic.py) - Basic programmatic usage
 - [Python API Advanced](examples/api/advanced.py) - Advanced analysis
 - [Sample JSON Output](examples/outputs/schema-sample.json)
 - [Sample Markdown Report](examples/outputs/report-sample.md)
+- [Documentation Changelog](CHANGELOG.md)
 
 ## CLI Usage
 
