@@ -62,9 +62,7 @@ class EventModel:
             lines.append("\nDomain Events:")
             for ev in self.events[:15]:
                 handlers = ", ".join(ev.handled_by[:3]) or "—"
-                lines.append(
-                    f"  {ev.name:30s} ← {ev.emitted_by.split('.')[-1]:25s} → [{handlers}]"
-                )
+                lines.append(f"  {ev.name:30s} ← {ev.emitted_by.split('.')[-1]:25s} → [{handlers}]")
         if self.commands:
             lines.append("\nCommand Handlers (top 10):")
             for cmd in self.commands[:10]:
@@ -106,11 +104,7 @@ def _find_command_handlers(modules: List[ModuleIR]) -> List[CommandHandler]:
     for mod in modules:
         for f in mod.functions:
             if f.role == CQRSRole.COMMAND or _AGGREGATE_PATTERNS.search(f.name):
-                emits = [
-                    _derive_event_name(c)
-                    for c in f.calls
-                    if _EVENT_EMIT_PATTERNS.search(c)
-                ]
+                emits = [_derive_event_name(c) for c in f.calls if _EVENT_EMIT_PATTERNS.search(c)]
                 if emits or f.role == CQRSRole.COMMAND:
                     commands.append(
                         CommandHandler(

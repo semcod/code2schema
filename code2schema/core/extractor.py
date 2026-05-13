@@ -87,9 +87,7 @@ class _FunctionVisitor(ast.NodeVisitor):
         self._process_func(node, is_async=True)
         self.generic_visit(node)
 
-    def _process_func(
-        self, node: ast.FunctionDef | ast.AsyncFunctionDef, is_async: bool
-    ) -> None:
+    def _process_func(self, node: ast.FunctionDef | ast.AsyncFunctionDef, is_async: bool) -> None:
         calls = self._collect_calls(node)
         side_effects = self._detect_side_effects(node, calls)
         docstring = ast.get_docstring(node)
@@ -100,9 +98,7 @@ class _FunctionVisitor(ast.NodeVisitor):
             calls=list(dict.fromkeys(calls)),  # deduplicate, preserve order
             fan_out=len(set(calls)),
             side_effects=side_effects,
-            lines=(
-                node.end_lineno - node.lineno + 1 if hasattr(node, "end_lineno") else 0
-            ),
+            lines=(node.end_lineno - node.lineno + 1 if hasattr(node, "end_lineno") else 0),
             is_async=is_async,
             docstring=docstring,
         )
@@ -162,9 +158,7 @@ def extract_module(path: Path) -> ModuleIR | None:
     imports = [
         alias.name
         for node in ast.walk(tree)
-        for alias in (
-            node.names if isinstance(node, (ast.Import, ast.ImportFrom)) else []
-        )
+        for alias in (node.names if isinstance(node, (ast.Import, ast.ImportFrom)) else [])
     ]
 
     return ModuleIR(

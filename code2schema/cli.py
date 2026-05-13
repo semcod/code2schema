@@ -91,9 +91,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--no-rules", action="store_true")
     parser.add_argument("--exclude", nargs="*", default=[])
     parser.add_argument("-q", "--quiet", action="store_true")
-    parser.add_argument(
-        "-V", "--version", action="version", version=f"%(prog)s {__version__}"
-    )
+    parser.add_argument("-V", "--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 
 
@@ -209,7 +207,7 @@ def _print_summary(modules, schema, G, t0, out_path, proto_path, md_path, html_p
     if html_path:
         outputs.append(f"   → {html_path.name}")
     print(
-        f"\n✅ Gotowe ({time.perf_counter()-t0:.2f}s)\n"
+        f"\n✅ Gotowe ({time.perf_counter() - t0:.2f}s)\n"
         f"   Modules  : {len(modules)}\n"
         f"   Functions: {len(funcs)}\n"
         f"   Queries  : {len(schema.queries())}\n"
@@ -217,8 +215,7 @@ def _print_summary(modules, schema, G, t0, out_path, proto_path, md_path, html_p
         f"   Orchest. : {len(schema.orchestrators())}\n"
         f"   Workflows: {len(schema.workflows)}\n"
         f"   Rules    : {len(schema.rules)}\n"
-        f"   Graph    : {G.number_of_nodes()}N / {G.number_of_edges()}E\n"
-        + "\n".join(outputs)
+        f"   Graph    : {G.number_of_nodes()}N / {G.number_of_edges()}E\n" + "\n".join(outputs)
     )
 
 

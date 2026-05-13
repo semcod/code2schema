@@ -81,9 +81,7 @@ class RuleIR(BaseModel):
 class SchemaIR(BaseModel):
     """Korzeń modelu semantycznego całego projektu."""
 
-    system: dict = Field(
-        default_factory=lambda: {"type": "code2schema", "version": "0.1"}
-    )
+    system: dict = Field(default_factory=lambda: {"type": "code2schema", "version": "0.1"})
     modules: List[ModuleIR] = Field(default_factory=list)
     workflows: List[WorkflowIR] = Field(default_factory=list)
     rules: List[RuleIR] = Field(default_factory=list)

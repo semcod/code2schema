@@ -92,9 +92,7 @@ def build_workflows(modules: List[ModuleIR]) -> List[WorkflowIR]:
                 workflow = WorkflowIR(
                     name=f"workflow_{f.name}",
                     entry=f.qualified_name,
-                    steps=[
-                        WorkflowStep(callee=c, is_async=f.is_async) for c in f.calls
-                    ],
+                    steps=[WorkflowStep(callee=c, is_async=f.is_async) for c in f.calls],
                 )
                 workflows.append(workflow)
     return workflows
